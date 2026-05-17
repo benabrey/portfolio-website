@@ -114,11 +114,7 @@ export default function Works() {
           <span className="works-stat-num">1</span>
           <span className="works-stat-label">Live Project</span>
         </motion.div>
-        <div className="works-stat-divider" />
-        <motion.div className="works-stat" variants={statItem}>
-          <span className="works-stat-num">48hr</span>
-          <span className="works-stat-label">Response Time</span>
-        </motion.div>
+
         <div className="works-stat-divider" />
         <motion.div className="works-stat" variants={statItem}>
           <span className="works-stat-num">∞</span>
