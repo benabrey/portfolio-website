@@ -14,18 +14,22 @@ export default function Nav() {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   const close = () => setOpen(false);
 
   return (
     <nav className={scrolled ? "scrolled" : ""}>
-      <Link href="/" className="nav-logo">Websites By Ben</Link>
+      <Link href="/" className="nav-logo">
+        Websites By Ben
+      </Link>
 
       <button
         className={`nav-toggle ${open ? "open" : ""}`}
-        onClick={() => setOpen(o => !o)}
+        onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close menu" : "Open menu"}
       >
         <span />
@@ -36,10 +40,10 @@ export default function Nav() {
       <div className={`nav-overlay ${open ? "open" : ""}`} onClick={close} />
 
       <ul className={`nav-links ${open ? "open" : ""}`}>
-        <li><Link href="/" onClick={close}><span className="nav-num">01</span>Home</Link></li>
-        <li><Link href="/works" onClick={close}><span className="nav-num">02</span>Portfolio</Link></li>
-        <li><Link href="/contact" onClick={close}><span className="nav-num">03</span>Contact</Link></li>
-        <li><Link href="/about" onClick={close}><span className="nav-num">04</span>About</Link></li>
+        <li><Link href="/" onClick={close}>Home</Link></li>
+        <li><Link href="/works" onClick={close}>Portfolio</Link></li>
+        <li><Link href="/contact" onClick={close}>Contact</Link></li>
+        <li><Link href="/about" onClick={close}>About</Link></li>
       </ul>
     </nav>
   );

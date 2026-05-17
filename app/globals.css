@@ -144,17 +144,6 @@ nav.scrolled {
 
 .nav-overlay { display: none; }
 
-.nav-num {
-  font-family: var(--font-grotesk);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  opacity: 0.5;
-  flex-shrink: 0;
-  transition: opacity 0.25s;
-}
-
 /* ── Shared ── */
 .section-label {
   display: inline-flex;
@@ -1123,9 +1112,6 @@ footer {
     width: 100%;
     border-radius: 0;
     background: none;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
     opacity: 0;
     transform: translateY(24px);
     transition: color 0.25s, opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
@@ -1141,8 +1127,6 @@ footer {
     color: var(--text);
     background: none;
   }
-  .nav-links a:hover .nav-num { opacity: 1; }
-
   .hiw-steps { flex-direction: column; align-items: center; gap: 1.5rem; }
   .hiw-connector {
     width: 1px; height: 30px;
