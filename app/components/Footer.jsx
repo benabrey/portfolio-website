@@ -1,25 +1,36 @@
 import Link from "next/link";
 
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/works", label: "Portfolio" },
+  { href: "/contact", label: "Contact" },
+  { href: "/about", label: "About" },
+];
+
 export default function Footer() {
   return (
     <footer>
-      <div className="footer-logo">Websites By Ben</div>
-      <div className="footer-copy">
-        &copy; {new Date().getFullYear()} Websites By Ben. All rights reserved.
-      </div>
-      <div className="footer-social">
-        <Link href="/">Home</Link>
-        <Link href="/works">My Works</Link>
-        <Link href="/contact">My Works</Link>
-        <Link href="/about">About</Link>
-        <a
-          href="https://linkedin.com/in/ben-abrey-39bb7025a/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fa fa-linkedin"
-        >
-          Connect With Me
-        </a>
+      <div className="footer-inner">
+        <Link href="/" className="footer-logo">
+          wURLd <span>web design</span>
+        </Link>
+
+        <div className="footer-nav">
+          {links.map(({ href, label }) => (
+            <Link key={href} href={href}>
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="footer-end">
+          <span className="footer-copy">
+            © {new Date().getFullYear()} wURLd
+          </span>
+          <Link href="/contact" className="footer-cta-btn">
+            Let's work together →
+          </Link>
+        </div>
       </div>
     </footer>
   );

@@ -80,7 +80,7 @@ export default function Works() {
           >
             Built from scratch.
             <br />
-            <em>Every. Time.</em>
+            <em>Every time.</em>
           </motion.h1>
 
           <motion.p
@@ -91,10 +91,6 @@ export default function Works() {
           >
             Custom coded websites — no templates, no shortcuts
           </motion.p>
-        </div>
-        <div className="works-hero-scroll">
-          <span>Scroll</span>
-          <div className="scroll-line" />
         </div>
       </section>
 

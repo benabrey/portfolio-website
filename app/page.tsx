@@ -34,8 +34,12 @@ export default function Home() {
 
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [3, 1]);
-  const heroScale = useTransform(scrollYProgress, [0,1], [1,0.92]);
-  const heroBlur = useTransform(scrollYProgress, [0,1], ["blur(0px", "blur(8px)"]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const heroBlur = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["blur(0px", "blur(8px)"],
+  );
   const heroYSpring = useSpring(heroY, { stiffness: 80, damping: 20 });
 
   const magnetic = useMagnetic(0.4);
@@ -58,14 +62,19 @@ export default function Home() {
             muted
             loop
             playsInline
-            initial={{scale:1.1}}
-            animate={{scale:1.18}}
-            transition={{duration:20, ease:"linear", repeat:Infinity, repeatType:"mirror"}}
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1.18 }}
+            transition={{
+              duration: 20,
+              ease: "linear",
+              repeat: Infinity,
+              repeatType: "mirror",
+            }}
             style={{
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              opacity: 0.15,
+              opacity: 0.5,
             }}
           >
             <source src="/videos/activelyCoding.mp4" type="video/mp4" />
@@ -75,8 +84,7 @@ export default function Home() {
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(to bottom, rgba(22,22,31,0.5) 0%, var(--bg) 100%)"
-                ,
+                "linear-gradient(to bottom, rgba(22,22,31,0.5) 0%, var(--bg) 100%)",
             }}
           />
         </div>
@@ -105,11 +113,11 @@ export default function Home() {
 
           <motion.h1
             className="hero-title"
-            variants={stagger(0.08,0)}
+            variants={stagger(0.08, 0)}
             initial="hidden"
             animate="visible"
           >
-            {["Websites ", "Made Right"].map((word, i) => (
+            {["wURLd ", "web design"].map((word, i) => (
               <span
                 key={i}
                 style={{
@@ -127,13 +135,19 @@ export default function Home() {
                       style={{
                         background:
                           "linear-gradient(135deg, var(--accent), var(--accent-2))",
-                          backgroundSize: "200% 200%",
+                        backgroundSize: "200% 200%",
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent",
                         backgroundClip: "text",
                       }}
-                      animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-                      transition ={{ duration: 6, ease:"linear", repeat:Infinity}}
+                      animate={{
+                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                      }}
+                      transition={{
+                        duration: 6,
+                        ease: "linear",
+                        repeat: Infinity,
+                      }}
                     >
                       {word}
                     </motion.span>
@@ -172,20 +186,21 @@ export default function Home() {
             <Link href="/contact" className="hero-cta">
               <motion.span
                 style={{
-                    x: useTransform(magnetic.x, (v: number) => v*0.4),
-                    y: useTransform(magnetic.y, (v: number) => v*0.4),
-                    display: "inline-block",
+                  x: useTransform(magnetic.x, (v: number) => v * 0.4),
+                  y: useTransform(magnetic.y, (v: number) => v * 0.4),
+                  display: "inline-block",
                 }}
-                >
+              >
                 Connect now
-                </motion.span>
+              </motion.span>
             </Link>
-          </motion.div> 
+          </motion.div>
         </motion.div>
       </section>
 
       {/* ── Marquee separator ── */}
-      <Marquee speed={-1} 
+      <Marquee
+        speed={-1}
         items={[
           "Custom Code",
           "No Templates",
@@ -228,9 +243,9 @@ export default function Home() {
           </motion.p>
 
           <motion.div
-          layout
+            layout
             className="services-grid"
-            variants={stagger(0.2,0)}
+            variants={stagger(0.2, 0)}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}

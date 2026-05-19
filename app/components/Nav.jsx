@@ -24,7 +24,7 @@ export default function Nav() {
   return (
     <nav className={scrolled ? "scrolled" : ""}>
       <Link href="/" className="nav-logo">
-        Websites By Ben
+        wURLd web design
       </Link>
 
       <button
@@ -40,10 +40,26 @@ export default function Nav() {
       <div className={`nav-overlay ${open ? "open" : ""}`} onClick={close} />
 
       <ul className={`nav-links ${open ? "open" : ""}`}>
-        <li><Link href="/" onClick={close}>Home</Link></li>
-        <li><Link href="/works" onClick={close}>Portfolio</Link></li>
-        <li><Link href="/contact" onClick={close}>Contact</Link></li>
-        <li><Link href="/about" onClick={close}>About</Link></li>
+        <li>
+          <Link href="/" onClick={close}>
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link href="/works" onClick={close}>
+            Portfolio
+          </Link>
+        </li>
+        <li>
+          <Link href="/contact" onClick={close}>
+            Contact
+          </Link>
+        </li>
+        <li>
+          <Link href="/about" onClick={close}>
+            About
+          </Link>
+        </li>
       </ul>
     </nav>
   );
