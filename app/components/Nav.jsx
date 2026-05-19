@@ -22,10 +22,34 @@ export default function Nav() {
   const close = () => setOpen(false);
 
   return (
-    <nav className={scrolled ? "scrolled" : ""}>
-      <Link href="/" className="nav-logo">
-        wURLd web design
-      </Link>
+    <>
+      <nav className={scrolled ? "scrolled" : ""}>
+        <Link href="/" className="nav-logo">
+          wURLd web design
+        </Link>
+        <ul className="nav-links">
+          <li>
+            <Link href="/" onClick={close}>
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link href="/works" onClick={close}>
+              Portfolio
+            </Link>
+          </li>
+          <li>
+            <Link href="/contact" onClick={close}>
+              Contact
+            </Link>
+          </li>
+          <li>
+            <Link href="/about" onClick={close}>
+              About
+            </Link>
+          </li>
+        </ul>
+      </nav>
 
       <button
         className={`nav-toggle ${open ? "open" : ""}`}
@@ -36,10 +60,8 @@ export default function Nav() {
         <span />
         <span />
       </button>
-
       <div className={`nav-overlay ${open ? "open" : ""}`} onClick={close} />
-
-      <ul className={`nav-links ${open ? "open" : ""}`}>
+      <ul className={`nav-mobile ${open ? "open" : ""}`}>
         <li>
           <Link href="/" onClick={close}>
             Home
@@ -61,6 +83,6 @@ export default function Nav() {
           </Link>
         </li>
       </ul>
-    </nav>
+    </>
   );
 }

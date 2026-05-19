@@ -40,15 +40,41 @@ const TECH_STACK = [
   },
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.92, rotateX: -15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
+  },
+};
+
 export default function TechStack() {
   return (
     <section className="tech-stack-section">
-      {/* Section heading */}
+      {/* Heading */}
       <motion.div
-        variants={stagger(0.08, 0.1)}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.1 } },
+        }}
         style={{ textAlign: "center", marginBottom: "4rem" }}
       >
         <motion.div className="section-label" variants={fadeUp}>
@@ -66,7 +92,7 @@ export default function TechStack() {
             fontSize: "1.05rem",
           }}
         >
-          The tools I trust to build fast, accessible, modern sites - no
+          The tools I trust to build fast, accessible, modern sites — no
           page-builders, no shortcuts.
         </motion.p>
       </motion.div>
@@ -75,46 +101,45 @@ export default function TechStack() {
       <div style={{ display: "flex", flexDirection: "column", gap: "3.5rem" }}>
         {TECH_STACK.map((cat) => (
           <div key={cat.category}>
-            <motion.h3
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.6 }}
-              style={{
-                fontSize: "0.75rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.22em",
-                color: "var(--text-muted)",
-                marginBottom: "1.25rem",
-                fontWeight: 600,
-              }}
-            >
-              {cat.category}
-            </motion.h3>
-
+            {/* Pill-style category header */}
             <motion.div
-              variants={stagger(0.06, 0.1)}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{ marginBottom: "1.25rem" }}
+            >
+              <span className="section-label" style={{ marginBottom: 0 }}>
+                {cat.category}
+              </span>
+            </motion.div>
+
+            {/* Cards with dramatic stagger */}
+            <motion.div
+              variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
                 gap: "1rem",
+                perspective: "800px",
               }}
             >
               {cat.items.map((tech) => (
                 <motion.div
                   key={tech.name}
-                  variants={fadeUp}
-                  whileHover={{ y: -4 }}
+                  variants={cardVariants}
+                  whileHover={{
+                    y: -6,
+                    scale: 1.03,
+                    boxShadow: `0 0 24px -4px ${tech.color}55`,
+                    borderColor: tech.color,
+                  }}
                   transition={{ type: "spring", stiffness: 300, damping: 22 }}
                   className="tech-card"
-                  style={
-                    {
-                      "--tech-color": tech.color,
-                    } as React.CSSProperties
-                  }
+                  style={{ "--tech-color": tech.color } as React.CSSProperties}
                 >
                   <img
                     src={`https://cdn.simpleicons.org/${tech.slug}/ffffff`}

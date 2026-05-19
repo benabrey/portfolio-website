@@ -53,8 +53,8 @@ export default function Works() {
       {/* ── Hero ── */}
       <section className="works-page-hero">
         <div className="hero-bg">
-          <video autoPlay muted loop playsInline>
-            <source src="/videos/activelyCoding.mp4" type="video/mp4" />
+          <video autoPlay muted loop playsInline style={{ opacity: 0.15 }}>
+            <source src="/videos/laptopOpening.mp4" type="video/mp4" />
           </video>
           <div className="works-hero-overlay" />
         </div>
