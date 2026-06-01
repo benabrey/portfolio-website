@@ -70,7 +70,7 @@ export default function Marquee(props: MarqueeProps) {
         padding: "1.5rem 0",
         borderTop: "1px solid var(--border)",
         borderBottom: "1px solid var(--border)",
-        fontFamily: "var(--font-tourney)",
+        fontFamily: "var(--font-display)",
         fontSize: "clamp(1rem, 2vw, 1.4rem)",
         letterSpacing: "0.06em",
         color: "var(--text-muted)",

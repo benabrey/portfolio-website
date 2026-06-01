@@ -26,7 +26,7 @@ export default function Contact() {
   // ── Spotlight that follows the cursor across the form card ──
   const mouseX = useMotionValue(-400);
   const mouseY = useMotionValue(-400);
-  const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(168,85,247,0.10), transparent 60%)`;
+  const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(217,91,41,0.08), transparent 60%)`;
 
   const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = cardRef.current?.getBoundingClientRect();
@@ -122,7 +122,7 @@ export default function Contact() {
             height: 500,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(168,85,247,0.18), transparent 70%)",
+              "radial-gradient(circle, rgba(217,91,41,0.18), transparent 70%)",
             filter: "blur(60px)",
             pointerEvents: "none",
             zIndex: 0,
@@ -140,7 +140,7 @@ export default function Contact() {
             height: 600,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(236,72,153,0.14), transparent 70%)",
+              "radial-gradient(circle, rgba(218,165,32,0.14), transparent 70%)",
             filter: "blur(80px)",
             pointerEvents: "none",
             zIndex: 0,
@@ -161,7 +161,7 @@ export default function Contact() {
               padding: 1.5,
               borderRadius: 28,
               background:
-                "conic-gradient(from var(--gradient-angle, 0deg), rgba(168,85,247,0.6), rgba(236,72,153,0.4), rgba(168,85,247,0.6), rgba(255,255,255,0.05), rgba(168,85,247,0.6))",
+                "conic-gradient(from var(--gradient-angle, 0deg), rgba(217,91,41,0.5), rgba(218,165,32,0.4), rgba(183,65,14,0.5), rgba(242,232,213,0.08), rgba(217,91,41,0.5))",
               animation: "spin-gradient 8s linear infinite",
             }}
           >
@@ -174,7 +174,7 @@ export default function Contact() {
                 position: "relative",
                 overflow: "hidden",
                 background:
-                  "linear-gradient(180deg, rgba(22,22,31,0.92), rgba(15,15,22,0.96))",
+                  "linear-gradient(180deg, rgba(30,23,16,0.95), rgba(19,15,10,0.98))",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
                 borderRadius: 26,
@@ -198,7 +198,8 @@ export default function Contact() {
                   position: "absolute",
                   inset: 0,
                   background:
-                    "radial-gradient(circle at 20% 10%, rgba(168,85,247,0.06), transparent 50%), radial-gradient(circle at 80% 90%, rgba(236,72,153,0.05), transparent 50%)",
+                    "radial-gradient(circle at 20% 10%, rgba(217,91,41,0.06), transparent 50%), radial-gradient(circle at 80% 90%, rgba(218,165,32,0.05), transparent 50%)",
+
                   pointerEvents: "none",
                 }}
               />
@@ -588,8 +589,8 @@ function FieldBlock({
     <div
       style={{
         position: "relative",
-        background: "rgba(255,255,255,0.025)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "rgba(61,43,31,0.025)",
+        border: "1px solid rgba(61,43,31,0.08)",
         borderRadius: 14,
         padding: "0.85rem 1rem",
         transition: "border-color 0.25s, background 0.25s",

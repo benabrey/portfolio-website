@@ -151,7 +151,7 @@ export function useParallax(offset = 60) {
 // Tracks cursor position for a glowing spotlight effect
 // Usage: const { x, y, handleMouseMove } = useGlowCursor()
 // Then add onMouseMove={handleMouseMove} to the section
-// And: <motion.div style={{ background: `radial-gradient(circle at ${x}px ${y}px, rgba(124,92,252,0.15), transparent 60%)` }} />
+// And: <motion.div style={{ background: `radial-gradient(circle at ${x}px ${y}px, rgba(217,91,41,0.15), transparent 60%)` }} />
 export function useGlowCursor() {
     const x = useMotionValue(0)
     const y = useMotionValue(0)

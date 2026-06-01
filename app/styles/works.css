@@ -21,14 +21,14 @@
   position: absolute; inset: 0;
   background:
     linear-gradient(to bottom, rgba(22,22,31,0.5) 0%, rgba(22,22,31,0.7) 100%),
-    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(124,92,252,0.15) 0%, transparent 70%);
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(217,91,41,0.15) 0%, transparent 70%);
 }
 .works-hero-content {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
 }
 .works-hero-title {
-  font-family: var(--font-bungee-shade);
+  font-family: var(--font-hero);
   font-size: clamp(3rem, 9vw, 7rem);
   font-weight: 400;
   line-height: 1.2;
@@ -59,7 +59,7 @@
   gap: 0.3rem; padding: 0.5rem 3rem; text-align: center;
 }
 .works-stat-num {
-  font-family: var(--font-jersey-15);
+  font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 400;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -79,6 +79,7 @@
 
 .project-card {
   background: var(--bg-card);
+  font-family: var(--font-display);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 2rem 2rem 0;
@@ -86,8 +87,8 @@
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 .project-card:hover {
-  border-color: rgba(124,92,252,0.25);
-  box-shadow: 0 0 60px rgba(124,92,252,0.07);
+  border-color: rgba(217,91,41,0.25);
+  box-shadow: 0 0 60px rgba(217,91,41,0.07);
 }
 
 .project-card-header {
@@ -106,18 +107,18 @@
   display: inline-flex; align-items: center; gap: 0.4rem;
   font-size: 0.82rem; font-weight: 600; color: var(--accent);
   padding: 0.4rem 1rem;
-  border: 1px solid rgba(124,92,252,0.3); border-radius: 8px;
-  background: rgba(124,92,252,0.08);
+  border: 1px solid rgba(217,91,41,0.3); border-radius: 8px;
+  background: rgba(217,91,41,0.08);
   transition: background 0.2s, border-color 0.2s;
 }
-.project-link:hover { background: rgba(124,92,252,0.15); border-color: rgba(124,92,252,0.5); }
+.project-link:hover { background: rgba(217,91,41,0.15); border-color: rgba(217,91,41,0.5); }
 
 .project-card-title-row {
   display: flex; align-items: center; gap: 1rem;
   margin-bottom: 0.75rem; flex-wrap: wrap;
 }
 .project-title {
-  font-family: var(--font-bungee-shade);
+  font-family: var(--font-hero);
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 400; letter-spacing: 0.05em; color: var(--text);
 }
@@ -131,8 +132,8 @@
   padding: 4px 12px; border-radius: 6px;
   font-size: 0.75rem; font-weight: 500;
   color: var(--accent);
-  background: rgba(124,92,252,0.1);
-  border: 1px solid rgba(124,92,252,0.2);
+  background: rgba(217,91,41,0.1);
+  border: 1px solid rgba(217,91,41,0.2);
 }
 
 .project-preview { border-top: 1px solid var(--border); margin: 0 -2rem; }
@@ -186,16 +187,16 @@
 .coming-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; width: 100%; margin-top: 2rem; }
 .coming-card {
   background: var(--bg);
-  border: 1px dashed rgba(255,255,255,0.1);
+  border: 1px dashed rgba(61,43,31,0.1);
   border-radius: var(--radius);
   padding: 2.5rem 1.5rem;
   display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
   transition: border-color 0.3s, background 0.3s;
 }
-.coming-card:hover { border-color: rgba(124,92,252,0.3); background: rgba(124,92,252,0.04); }
+.coming-card:hover { border-color: rgba(217,91,41,0.3); background: rgba(217,91,41,0.04); }
 .coming-card-icon {
   width: 40px; height: 40px; border-radius: 50%;
-  border: 1px dashed rgba(124,92,252,0.3);
+  border: 1px dashed rgba(217,91,41,0.3);
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem; color: var(--accent); opacity: 0.5;
 }
@@ -208,7 +209,7 @@
 .works-cta-banner::before {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(124,92,252,0.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(217,91,41,0.1) 0%, transparent 70%);
   pointer-events: none;
 }
 .works-cta-inner {

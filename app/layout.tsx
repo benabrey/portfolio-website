@@ -1,58 +1,29 @@
-import {
-  Syne,
-  Inter,
-  Space_Grotesk,
-  Bungee_Shade,
-  Tourney,
-  Squada_One,
-  Jersey_15,
-  Josefin_Sans,
-} from "next/font/google";
+import { Monoton, Fascinate_Inline, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
-import Cursor from "./components/Cursor";
 import { type ReactNode } from "react";
 import ScrollProgress from "./components/ScrollProgress";
+import AlbumCover from "./AlbumCover";
 
-const syne = Syne({
+const monoton = Monoton({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-hero",
+  display: "swap",
+});
+
+const fascinateInline = Fascinate_Inline({
+  weight: "400",
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["700", "800"],
-});
-const josefinSans = Josefin_Sans({
-  subsets: ["latin"],
-  variable: "--font",
-  weight: ["300", "400", "500", "600", "700"],
-});
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-grotesk",
-  weight: ["300", "400", "500"],
+  display: "swap",
 });
 
-const bungeeShade = Bungee_Shade({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-bungee-shade",
-  weight: "400",
-});
-
-const tourney = Tourney({
-  subsets: ["latin"],
-  variable: "--font-tourney",
-  weight: ["700", "800"],
-});
-
-const squadaOne = Squada_One({
-  subsets: ["latin"],
-  variable: "--font-squada-one",
-  weight: "400",
-});
-
-const jersey15 = Jersey_15({
-  subsets: ["latin"],
-  variable: "--font-jersey-15",
-  weight: "400",
+  variable: "--font-dm-sans",
+  display: "swap",
 });
 
 export const metadata = {
@@ -70,11 +41,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body
-        className={`${syne.variable} ${josefinSans.variable} ${spaceGrotesk.variable} ${bungeeShade.variable} ${tourney.variable} ${squadaOne.variable} ${jersey15.variable}`}
+        className={`${monoton.variable} ${fascinateInline.variable} ${dmSans.variable}`}
       >
-        <Cursor />
         <Nav />
         <ScrollProgress />
+        <AlbumCover />
         {children}
         <Footer />
       </body>

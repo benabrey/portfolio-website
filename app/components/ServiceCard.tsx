@@ -30,7 +30,7 @@ export default function ServiceCard({
 
   // useMotionTemplate lets you build a dynamic CSS string from motion values
   // This creates a radial gradient that follows the cursor
-  const glowBackground = useMotionTemplate`radial-gradient(circle at ${glow.x}px ${glow.y}px, rgba(124,92,252,0.12), transparent 60%)`;
+  const glowBackground = useMotionTemplate`radial-gradient(circle at ${glow.x}px ${glow.y}px, rgba(217,91,41,0.12), transparent 60%)`;
 
   return (
     // flipIn — card flips in from 3D perspective when it scrolls into view

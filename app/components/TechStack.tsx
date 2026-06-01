@@ -101,15 +101,51 @@ export default function TechStack() {
       <div style={{ display: "flex", flexDirection: "column", gap: "3.5rem" }}>
         {TECH_STACK.map((cat) => (
           <div key={cat.category}>
-            {/* Pill-style category header */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              style={{ marginBottom: "1.25rem" }}
+              transition={{
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+              }}
+              style={{
+                marginBottom: "1.25rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+              }}
             >
-              <span className="section-label" style={{ marginBottom: 0 }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "0.75rem",
+                  color: "var(--accent)",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                }}
+              >
+                {String(TECH_STACK.indexOf(cat) + 1).padStart(2, "0")}
+              </span>
+              <span
+                style={{
+                  color: "var(--text-muted)",
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                /
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "var(--text-sub)",
+                }}
+              >
                 {cat.category}
               </span>
             </motion.div>

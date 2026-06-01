@@ -128,7 +128,7 @@ export default function Works() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            whileHover={{ y: -4, boxShadow: "0 0 60px rgba(124,92,252,0.12)" }}
+            whileHover={{ y: -4, boxShadow: "0 0 60px rgba(217,91,41,0.12)" }}
             transition={{ type: "spring", stiffness: 200, damping: 20 }}
           >
             <div className="project-card-header">
@@ -259,7 +259,7 @@ export default function Works() {
                 key={i}
                 className="coming-card"
                 variants={cardVariant}
-                whileHover={{ y: -4, borderColor: "rgba(124,92,252,0.3)" }}
+                whileHover={{ y: -4, borderColor: "rgba(217,91,41,0.3)" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <div className="coming-card-icon">+</div>

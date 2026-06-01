@@ -57,13 +57,13 @@
 .hero-cta::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  background: linear-gradient(135deg, rgba(61,43,31,0.15), transparent);
   opacity: 0;
   transition: opacity 0.3s;
 }
 .hero-cta:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 30px var(--accent-glow), 0 0 0 4px rgba(124,92,252,0.15);
+  box-shadow: 0 8px 30px var(--accent-glow), 0 0 0 4px rgba(217,91,41,0.15);
 }
 .hero-cta:hover::before { opacity: 1; }
 .hero-cta:active { transform: scale(0.98); }
