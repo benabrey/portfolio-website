@@ -59,7 +59,6 @@ export default function Home() {
   const [flipped, setFlipped] = useState(false);
   const [maxX, setMaxX] = useState(300);
   const [vinylSize, setVinylSize] = useState(340);
-  const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const draggingRef = useRef(false);
@@ -73,7 +72,6 @@ export default function Home() {
     pullXRef.current = pullX;
   }, [pullX]);
 
-  // Responsive sizing — vinyl takes up much more of the viewport
   useEffect(() => {
     function updateSize() {
       const vw = window.innerWidth;
@@ -105,98 +103,133 @@ export default function Home() {
     [maxX],
   );
 
-  // Pointer drag — NO snapping, stays where you leave it
-  // Small moves (< 5px) count as a click → flip the record
-  const onPointerDown = useCallback(
-    (e: React.PointerEvent) => {
-      if ((e.target as HTMLElement).closest(".label-link")) return;
-      draggingRef.current = true;
-      dragStartX.current = isMobile ? e.clientY : e.clientX;
-      dragStartVal.current = pullXRef.current;
-      dragDistance.current = 0;
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    },
-    [isMobile],
-  );
+  // ── Desktop drag on record-track ──────────────────────────────────────────
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest(".label-link")) return;
+    draggingRef.current = true;
+    dragStartX.current = e.clientX;
+    dragStartVal.current = pullXRef.current;
+    dragDistance.current = 0;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  }, []);
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
       if (!draggingRef.current) return;
-      const d = isMobile
-        ? dragStartX.current - e.clientY
-        : e.clientX - dragStartX.current;
+      const d = e.clientX - dragStartX.current;
       dragDistance.current = Math.abs(d);
-      const next = clamp(dragStartVal.current + (isMobile ? d * 0.5 : d));
+      const next = clamp(dragStartVal.current + d);
       pullXRef.current = next;
       setPullX(next);
     },
-    [clamp, isMobile],
+    [clamp],
   );
 
-  const onPointerUp = useCallback((e?: React.PointerEvent) => {
+  const onPointerUp = useCallback(() => {
     if (!draggingRef.current) return;
     draggingRef.current = false;
     if (dragDistance.current < 5 && fullyOut) {
-      // On mobile, only flip when the tap lands on the vinyl disc itself
-      if (isMobile && e && !(e.target as HTMLElement).closest(".vinyl")) return;
       setFlipped((f) => !f);
     }
-  }, [fullyOut, isMobile]);
+  }, [fullyOut]);
 
-  // Mobile: prevent native page scroll until the record is fully pulled out
+  // ── Mobile: touch events drive vinyl, pass through at boundaries ──────────
   useEffect(() => {
     if (!isMobile) return;
-    const prevent = (e: TouchEvent) => {
-      if (pullXRef.current < maxX) e.preventDefault();
+
+    let lastY = 0;
+    let totalMove = 0;
+    let touchTarget: EventTarget | null = null;
+
+    const onTouchStart = (e: TouchEvent) => {
+      lastY = e.touches[0].clientY;
+      totalMove = 0;
+      touchTarget = e.target;
+      draggingRef.current = true;
     };
-    document.addEventListener("touchmove", prevent, { passive: false });
-    return () => document.removeEventListener("touchmove", prevent);
+
+    const onTouchMove = (e: TouchEvent) => {
+      if ((touchTarget as HTMLElement)?.closest(".label-link")) return;
+
+      const currentY = e.touches[0].clientY;
+      const dy = lastY - currentY; // positive = swipe up = pull vinyl out
+      lastY = currentY;
+      totalMove += Math.abs(dy);
+
+      const current = pullXRef.current;
+
+      // At boundary in the same direction → let native page scroll take over
+      if (dy > 0 && current >= maxX) return;
+      if (dy < 0 && current <= 0) return;
+
+      e.preventDefault();
+      const next = Math.max(0, Math.min(maxX, current + dy * 0.8));
+      pullXRef.current = next;
+      setPullX(next);
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      draggingRef.current = false;
+      // Tap on the vinyl disc when it's out → flip sides
+      if (totalMove < 8 && pullXRef.current >= maxX * 0.5) {
+        const target = e.changedTouches[0].target as HTMLElement;
+        if (target.closest(".vinyl") && !target.closest(".label-link")) {
+          setFlipped((f) => !f);
+        }
+      }
+    };
+
+    document.addEventListener("touchstart", onTouchStart, { passive: true });
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    return () => {
+      document.removeEventListener("touchstart", onTouchStart);
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("touchend", onTouchEnd);
+    };
   }, [isMobile, maxX]);
 
-  // Wheel to pull — also no snap
+  // ── Desktop: wheel/trackpad drives vinyl, passes through at boundaries ────
   useEffect(() => {
     const scene = sceneRef.current;
-    if (!scene) return;
+    if (!scene || isMobile) return;
 
     const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
       const raw = e.deltaY || e.deltaX;
-      // On mobile swipe-up = pull out → delta is negative when swiping up, so invert
-      const delta = isMobile ? -raw : raw;
-      const speed = isMobile ? 0.3 : 0.5;
-      const next = Math.max(
-        0,
-        Math.min(maxX, pullXRef.current + delta * speed),
-      );
+      const current = pullXRef.current;
+
+      // At boundary in the same direction → pass through to native page scroll
+      if ((raw > 0 && current >= maxX) || (raw < 0 && current <= 0)) return;
+
+      e.preventDefault();
+      const next = Math.max(0, Math.min(maxX, current + raw * 0.5));
       pullXRef.current = next;
       setPullX(next);
     };
 
     scene.addEventListener("wheel", onWheel, { passive: false });
     return () => scene.removeEventListener("wheel", onWheel);
-  }, [maxX]);
+  }, [maxX, isMobile]);
 
-  // Desktop only: lock body scroll until record is out.
-  // Mobile uses touchmove preventDefault instead — setting body overflow on iOS
-  // creates a scroll container that permanently kills touch-scroll even when released.
+  // ── Desktop: body scroll lock — open at maxX, reset+lock when back home ───
   useEffect(() => {
     if (isMobile) return;
-    document.body.style.overflow = fullyOut ? "" : "hidden";
+    const atMax = pullX >= maxX;
+    const atMin = pullX <= 0;
+    if (atMax) {
+      document.body.style.overflow = "";
+    } else {
+      document.body.style.overflow = "hidden";
+      if (atMin) window.scrollTo(0, 0);
+    }
     return () => { document.body.style.overflow = ""; };
-  }, [fullyOut, isMobile]);
+  }, [pullX, maxX, isMobile]);
 
   const sleeveSize = vinylSize * 1.12;
 
   return (
-    <main
-      className="vinyl-home"
-      ref={sceneRef}
-      onPointerDown={isMobile ? onPointerDown : undefined}
-      onPointerMove={isMobile ? onPointerMove : undefined}
-      onPointerUp={isMobile ? onPointerUp : undefined}
-      onPointerCancel={isMobile ? onPointerUp : undefined}
-      style={isMobile ? { touchAction: "none" } : undefined}
-    >
+    <main className="vinyl-home" ref={sceneRef}>
       <RainbowStripe />
 
       <div className="home-sunburst" />
@@ -366,7 +399,7 @@ export default function Home() {
           </div>
 
           <div className="flip-hint" style={{ opacity: fullyOut ? 1 : 0 }}>
-            Click vinyl to flip
+            {isMobile ? "Tap vinyl to flip" : "Click vinyl to flip"}
           </div>
         </div>
       </div>
