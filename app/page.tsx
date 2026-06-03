@@ -165,7 +165,7 @@ export default function Home() {
 
   // Lock page scroll
   useEffect(() => {
-    //document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
@@ -184,8 +184,8 @@ export default function Home() {
         <div
           className="sleeve"
           style={{
-            width: isMobile ? vinylSize * 0.6 : sleeveSize,
-            height: isMobile ? vinylSize * 0.6 : sleeveSize,
+            width: isMobile ? Math.min(vinylSize * 1.15, 300) : sleeveSize,
+            height: isMobile ? Math.min(vinylSize * 1.15, 300) : sleeveSize,
             ...(isMobile
               ? {
                   transform: `scale(${1 - (pullX / maxX) * 0.5}) perspective(1200px) rotateY(3deg)`,

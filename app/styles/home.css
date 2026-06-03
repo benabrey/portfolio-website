@@ -482,12 +482,27 @@
     border-radius: 6px;
     border-right: 2px solid rgba(242, 232, 213, 0.12);
     transform: perspective(1200px) rotateY(0deg) !important;
+    padding: 28px 20px;
   }
 
   .turntable-mobile .sleeve-inner-border {
     right: 8px;
     border-right: 1px solid rgba(217, 91, 41, 0.1);
     border-radius: 4px;
+  }
+
+  .turntable-mobile .sleeve-rainbow {
+    width: calc(100% + 40px);
+    margin: 0 -20px;
+  }
+
+  .turntable-mobile .sleeve-badge {
+    font-size: 0.6rem;
+    margin-bottom: 10px;
+  }
+
+  .turntable-mobile .sleeve-sub {
+    font-size: 0.65rem;
   }
 
   .record-track-mobile {
