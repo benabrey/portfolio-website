@@ -82,8 +82,8 @@ export default function Home() {
       setIsMobile(mobile);
 
       if (mobile) {
-        setVinylSize(Math.min(vw * 0.65, 250));
-        setMaxX(100);
+        setVinylSize(Math.min(vw * 0.76, 360));
+        setMaxX(120);
       } else {
         const size = Math.min(Math.max(vh * 0.8, 400), 600);
         setVinylSize(size);
@@ -123,7 +123,7 @@ export default function Home() {
     (e: React.PointerEvent) => {
       if (!draggingRef.current) return;
       const d = isMobile
-        ? e.clientY - dragStartX.current
+        ? dragStartX.current - e.clientY
         : e.clientX - dragStartX.current;
       dragDistance.current = Math.abs(d);
       const next = clamp(dragStartVal.current + (isMobile ? d * 0.5 : d));
@@ -160,7 +160,9 @@ export default function Home() {
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      const delta = e.deltaY || e.deltaX;
+      const raw = e.deltaY || e.deltaX;
+      // On mobile swipe-up = pull out → delta is negative when swiping up, so invert
+      const delta = isMobile ? -raw : raw;
       const speed = isMobile ? 0.3 : 0.5;
       const next = Math.max(
         0,
@@ -203,8 +205,8 @@ export default function Home() {
         <div
           className="sleeve"
           style={{
-            width: isMobile ? Math.min(vinylSize * 1.15, 300) : sleeveSize,
-            height: isMobile ? Math.min(vinylSize * 1.15, 300) : sleeveSize,
+            width: isMobile ? Math.min(vinylSize * 1.15, 420) : sleeveSize,
+            height: isMobile ? Math.min(vinylSize * 1.15, 420) : sleeveSize,
             ...(isMobile
               ? {
                   transform: `scale(${1 - (pullX / maxX) * 0.5}) perspective(1200px) rotateY(3deg)`,
@@ -372,7 +374,7 @@ export default function Home() {
       <div className="pull-hint" style={{ opacity: pullX < 20 ? 1 : 0 }}>
         <span className="pull-arrow">
           {isMobile
-            ? "Swipe down to pull the record out↓"
+            ? "Swipe up to pull the record out ↑"
             : "Drag or scroll to pull the record out →"}
         </span>
       </div>
