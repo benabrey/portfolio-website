@@ -81,7 +81,7 @@ export default function Home() {
       const mobile = vw < 768;
       setIsMobile(mobile);
 
-      if (isMobile) {
+      if (mobile) {
         setVinylSize(Math.min(vw * 0.65, 250));
         setMaxX(100);
       } else {
@@ -165,7 +165,7 @@ export default function Home() {
 
   // Lock page scroll
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    //document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
