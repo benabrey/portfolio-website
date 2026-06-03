@@ -133,14 +133,25 @@ export default function Home() {
     [clamp, isMobile],
   );
 
-  const onPointerUp = useCallback(() => {
+  const onPointerUp = useCallback((e?: React.PointerEvent) => {
     if (!draggingRef.current) return;
     draggingRef.current = false;
-    // If barely moved, treat as a click → flip
     if (dragDistance.current < 5 && fullyOut) {
+      // On mobile, only flip when the tap lands on the vinyl disc itself
+      if (isMobile && e && !(e.target as HTMLElement).closest(".vinyl")) return;
       setFlipped((f) => !f);
     }
-  }, [fullyOut]);
+  }, [fullyOut, isMobile]);
+
+  // Mobile: prevent native page scroll until the record is fully pulled out
+  useEffect(() => {
+    if (!isMobile) return;
+    const prevent = (e: TouchEvent) => {
+      if (pullXRef.current < maxX) e.preventDefault();
+    };
+    document.addEventListener("touchmove", prevent, { passive: false });
+    return () => document.removeEventListener("touchmove", prevent);
+  }, [isMobile, maxX]);
 
   // Wheel to pull — also no snap
   useEffect(() => {
@@ -174,7 +185,15 @@ export default function Home() {
   const sleeveSize = vinylSize * 1.12;
 
   return (
-    <main className="vinyl-home" ref={sceneRef}>
+    <main
+      className="vinyl-home"
+      ref={sceneRef}
+      onPointerDown={isMobile ? onPointerDown : undefined}
+      onPointerMove={isMobile ? onPointerMove : undefined}
+      onPointerUp={isMobile ? onPointerUp : undefined}
+      onPointerCancel={isMobile ? onPointerUp : undefined}
+      style={isMobile ? { touchAction: "none" } : undefined}
+    >
       <RainbowStripe />
 
       <div className="home-sunburst" />
@@ -295,10 +314,10 @@ export default function Home() {
                     : "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
                 }
           }
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
+          onPointerDown={!isMobile ? onPointerDown : undefined}
+          onPointerMove={!isMobile ? onPointerMove : undefined}
+          onPointerUp={!isMobile ? onPointerUp : undefined}
+          onPointerCancel={!isMobile ? onPointerUp : undefined}
         >
           <div
             className={`vinyl${fullyOut ? " vinyl-spinning" : ""}`}

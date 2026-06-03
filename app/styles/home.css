@@ -491,10 +491,26 @@
     border-radius: 4px;
   }
 
+  /* Recalculate all absolute positions for mobile padding: 28px top/bottom, 20px left/right */
   .turntable-mobile .sleeve-rainbow {
     width: calc(100% + 40px);
     margin: 0 -20px;
   }
+  .turntable-mobile .sleeve-rainbow:first-of-type { top: 14px; }
+  .turntable-mobile .sleeve-rainbow:last-of-type  { bottom: 14px; }
+
+  .turntable-mobile .sleeve-lp {
+    top: 18px;
+    left: 14px;
+  }
+
+  .turntable-mobile .sleeve-corner-tl { top: 20px; left: 10px; }
+  .turntable-mobile .sleeve-corner-tr { top: 20px; right: 10px; }
+  .turntable-mobile .sleeve-corner-bl { bottom: 20px; left: 10px; }
+  .turntable-mobile .sleeve-corner-br { bottom: 20px; right: 10px; }
+
+  .turntable-mobile .sleeve-year    { bottom: 4px; right: 14px; }
+  .turntable-mobile .sleeve-catalog { bottom: 4px; left: 14px; }
 
   .turntable-mobile .sleeve-badge {
     font-size: 0.6rem;
