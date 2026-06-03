@@ -223,7 +223,9 @@ export default function Home() {
       document.body.style.overflow = "hidden";
       if (atMin) window.scrollTo(0, 0);
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [pullX, maxX, isMobile]);
 
   const sleeveSize = vinylSize * 1.12;
@@ -337,7 +339,7 @@ export default function Home() {
           style={
             isMobile
               ? {
-                  transform: `translate(-50%, -50%) scale(${0.4 + (pullX / maxX) * 0.6})`,
+                  transform: `translate(-50%, -50%) scale(${0.4 + (pullX / maxX) * 0.85})`,
                   transition: draggingRef.current
                     ? "none"
                     : "transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
