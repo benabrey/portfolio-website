@@ -92,8 +92,9 @@ export default function TechStack() {
             fontSize: "1.05rem",
           }}
         >
-          The tools I trust to build fast, accessible, modern sites — no
-          page-builders, no shortcuts.
+          The tools I trust to build fast, accessible, modern sites
+          <br />
+          no page-builders, no shortcuts.
         </motion.p>
       </motion.div>
 

@@ -33,9 +33,9 @@
   --pill-border: rgba(217,91,41,0.30);
 
   --nav-h:    68px;
-  --radius:   14px;
+  --radius:   20px;
 
-  --font:         var(--font-display);
+  --font:         var(--font-dm-sans);
   --font-display: var(--font-display);
   --font-hero:    var(--font-hero);
   --font-logo:    var(--font-hero);
@@ -51,7 +51,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font), system-ui, sans-serif;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
   font-size: 1rem;
   line-height: 1.7;
   overflow-x: hidden;
@@ -74,3 +74,30 @@ h1, h2, h3 {
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-lift); }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
+
+/* ── Rainbow Stripe (reusable) ── */
+.rainbow-stripe {
+  display: flex;
+  height: 6px;
+  width: 100%;
+  flex-shrink: 0;
+}
+.rainbow-stripe span { flex: 1; }
+.rainbow-stripe .s1 { background: var(--rust); }
+.rainbow-stripe .s2 { background: var(--accent); }
+.rainbow-stripe .s3 { background: var(--accent-2); }
+.rainbow-stripe .s4 { background: var(--mustard); }
+.rainbow-stripe .s5 { background: var(--avocado); }
+.rainbow-stripe .s6 { background: #5C3D1E; }
+
+/* ── Star-flanked label (replaces pills) ── */
+.star-label {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  background: none;
+  border: none;
+  padding: 0;
+}

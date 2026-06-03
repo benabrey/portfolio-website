@@ -1,287 +1,364 @@
 "use client";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
-import TextReveal from "./components/TextReveal";
-import Marquee from "./components/Marquee";
-import HowItWorks from "./components/HowItWorks";
-import ServiceCard from "./components/ServiceCard";
-import {
-  fadeUp,
-  fadeIn,
-  scaleIn,
-  stagger,
-  useMagnetic,
-  type Variants,
-} from "./lib/animations";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
-const wordVariants: Variants = {
-  hidden: { y: "110%", opacity: 0 },
-  visible: {
-    y: "0%",
-    opacity: 1,
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
+const GROOVE_COUNT = 50;
+
+function Grooves() {
+  const circles = [];
+  for (let i = 0; i < GROOVE_COUNT; i++) {
+    const r = 18 + i * 2.5;
+    circles.push(
+      <circle
+        key={i}
+        cx="150"
+        cy="150"
+        r={r}
+        fill="none"
+        stroke="rgba(255,255,255,0.04)"
+        strokeWidth="0.5"
+      />,
+    );
+  }
+  return (
+    <svg className="groove-svg" viewBox="0 0 300 300" aria-hidden="true">
+      {circles}
+    </svg>
+  );
+}
+
+function RainbowStripe({ reverse = false }: { reverse?: boolean }) {
+  const order = reverse
+    ? ["s6", "s5", "s4", "s3", "s2", "s1"]
+    : ["s1", "s2", "s3", "s4", "s5", "s6"];
+  return (
+    <div className="rainbow-stripe">
+      {order.map((c) => (
+        <span key={c} className={c} />
+      ))}
+    </div>
+  );
+}
+
+function SleeveRainbow() {
+  return (
+    <div className="sleeve-rainbow">
+      <span style={{ background: "#B7410E" }} />
+      <span style={{ background: "#D95B29" }} />
+      <span style={{ background: "#DAA520" }} />
+      <span style={{ background: "#CC8F00" }} />
+      <span style={{ background: "#6B8E23" }} />
+      <span style={{ background: "#5C3D1E" }} />
+    </div>
+  );
+}
 
 export default function Home() {
-  const heroRef = useRef<HTMLElement>(null);
+  const [pullX, setPullX] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [maxX, setMaxX] = useState(300);
+  const [vinylSize, setVinylSize] = useState(340);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
+  const draggingRef = useRef(false);
+  const dragStartX = useRef(0);
+  const dragStartVal = useRef(0);
+  const dragDistance = useRef(0);
+  const pullXRef = useRef(0);
+  const sceneRef = useRef<HTMLDivElement>(null);
 
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [3, 1]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const heroBlur = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["blur(0px", "blur(8px)"],
+  useEffect(() => {
+    pullXRef.current = pullX;
+  }, [pullX]);
+
+  // Responsive sizing — vinyl takes up much more of the viewport
+  useEffect(() => {
+    function updateSize() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const mobile = vw < 768;
+      setIsMobile(mobile);
+
+      if (isMobile) {
+        setVinylSize(Math.min(vw * 0.65, 250));
+        setMaxX(100);
+      } else {
+        const size = Math.min(Math.max(vh * 0.8, 400), 600);
+        setVinylSize(size);
+        const sleeveW = size * 1.12;
+        const sleeveRight = vw / 2 + sleeveW / 2;
+        const available = vw - sleeveRight - size * 0.1;
+        setMaxX(Math.max(available, size * 0.6));
+      }
+    }
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  const fullyOut = pullX > maxX * 0.5;
+
+  const clamp = useCallback(
+    (x: number) => Math.max(0, Math.min(maxX, x)),
+    [maxX],
   );
-  const heroYSpring = useSpring(heroY, { stiffness: 80, damping: 20 });
 
-  const magnetic = useMagnetic(0.4);
+  // Pointer drag — NO snapping, stays where you leave it
+  // Small moves (< 5px) count as a click → flip the record
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      if ((e.target as HTMLElement).closest(".label-link")) return;
+      draggingRef.current = true;
+      dragStartX.current = isMobile ? e.clientY : e.clientX;
+      dragStartVal.current = pullXRef.current;
+      dragDistance.current = 0;
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    },
+    [isMobile],
+  );
+
+  const onPointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (!draggingRef.current) return;
+      const d = isMobile
+        ? e.clientY - dragStartX.current
+        : e.clientX - dragStartX.current;
+      dragDistance.current = Math.abs(d);
+      const next = clamp(dragStartVal.current + (isMobile ? d * 0.5 : d));
+      pullXRef.current = next;
+      setPullX(next);
+    },
+    [clamp, isMobile],
+  );
+
+  const onPointerUp = useCallback(() => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    // If barely moved, treat as a click → flip
+    if (dragDistance.current < 5 && fullyOut) {
+      setFlipped((f) => !f);
+    }
+  }, [fullyOut]);
+
+  // Wheel to pull — also no snap
+  useEffect(() => {
+    const scene = sceneRef.current;
+    if (!scene) return;
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY || e.deltaX;
+      const speed = isMobile ? 0.3 : 0.5;
+      const next = Math.max(
+        0,
+        Math.min(maxX, pullXRef.current + delta * speed),
+      );
+      pullXRef.current = next;
+      setPullX(next);
+    };
+
+    scene.addEventListener("wheel", onWheel, { passive: false });
+    return () => scene.removeEventListener("wheel", onWheel);
+  }, [maxX]);
+
+  // Lock page scroll
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  const sleeveSize = vinylSize * 1.12;
 
   return (
-    <main>
-      {/* ── Hero ── */}
-      <section className="hero" ref={heroRef}>
-        {/* Video background */}
+    <main className="vinyl-home" ref={sceneRef}>
+      <RainbowStripe />
+
+      <div className="home-sunburst" />
+
+      <div className={`turntable${isMobile ? " turntable-mobile" : ""}`}>
+        {/* ── Decorated Sleeve ── */}
         <div
+          className="sleeve"
           style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 0,
-            overflow: "hidden",
+            width: isMobile ? vinylSize * 0.6 : sleeveSize,
+            height: isMobile ? vinylSize * 0.6 : sleeveSize,
+            ...(isMobile
+              ? {
+                  transform: `scale(${1 - (pullX / maxX) * 0.5}) perspective(1200px) rotateY(3deg)`,
+                  opacity: 1 - (pullX / maxX) * 0.7,
+                  transition: draggingRef.current
+                    ? "none"
+                    : "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+                }
+              : {}),
           }}
         >
-          <motion.video
-            autoPlay
-            muted
-            loop
-            playsInline
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1.18 }}
-            transition={{
-              duration: 20,
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "mirror",
-            }}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              opacity: 0.5,
-            }}
-          >
-            <source src="/videos/activelyCoding.mp4" type="video/mp4" />
-          </motion.video>
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to bottom, rgba(22,22,31,0.5) 0%, var(--bg) 100%)",
-            }}
-          />
-        </div>
+          {/* Inner border */}
+          <div className="sleeve-inner-border" />
 
-        {/* Hero content — sits above the video */}
-        <motion.div
-          className="hero-section"
-          style={{
-            y: heroYSpring,
-            opacity: heroOpacity,
-            scale: heroScale,
-            filter: heroBlur,
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
-          <motion.p
-            className="hero-eyebrow"
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.1 }}
-          >
-            Kelowna, BC
-          </motion.p>
+          {/* Rainbow stripe across top */}
+          <SleeveRainbow />
 
-          <motion.h1
-            className="hero-title"
-            variants={stagger(0.08, 0)}
-            initial="hidden"
-            animate="visible"
-          >
-            {["wURLd ", "web design"].map((word, i) => (
-              <span
-                key={i}
-                style={{
-                  display: "inline-block",
-                  overflow: "hidden",
-                  marginRight: "0.25em",
-                }}
-              >
-                <motion.span
-                  style={{ display: "inline-block" }}
-                  variants={wordVariants}
-                >
-                  {i === 1 ? (
-                    <motion.span
-                      style={{
-                        background:
-                          "linear-gradient(135deg, var(--accent), var(--accent-2))",
-                        backgroundSize: "200% 200%",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                      }}
-                      animate={{
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                      }}
-                      transition={{
-                        duration: 6,
-                        ease: "linear",
-                        repeat: Infinity,
-                      }}
-                    >
-                      {word}
-                    </motion.span>
-                  ) : (
-                    word
-                  )}
-                </motion.span>
-              </span>
-            ))}
-          </motion.h1>
+          {/* Corner decorations */}
+          <span className="sleeve-corner sleeve-corner-tl">✦</span>
+          <span className="sleeve-corner sleeve-corner-tr">✦</span>
+          <span className="sleeve-corner sleeve-corner-bl">✦</span>
+          <span className="sleeve-corner sleeve-corner-br">✦</span>
 
-          <motion.p
-            className="hero-sub"
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={{ delay: 0.5 }}
+          {/* Stereo badge */}
+          <div className="sleeve-stereo">Stereo</div>
+
+          {/* LP marker */}
+          <span className="sleeve-lp">LP</span>
+
+          {/* Main content */}
+          <motion.div
+            className="sleeve-badge"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
           >
-            Custom coded websites, no pre-built services used
-          </motion.p>
+            ✦ Kelowna, BC ✦
+          </motion.div>
 
           <motion.div
-            ref={magnetic.ref}
-            style={{ x: magnetic.x, y: magnetic.y, display: "inline-block" }}
-            onMouseMove={magnetic.handleMouseMove}
-            onMouseLeave={magnetic.handleMouseLeave}
+            className="sleeve-title"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: 0.65,
-              duration: 0.7,
-              ease: [0.22, 1, 0.36, 1] as const,
+              delay: 0.35,
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
             }}
-            whileTap={{ scale: 0.96 }}
           >
-            <Link href="/contact" className="hero-cta">
-              <motion.span
-                style={{
-                  x: useTransform(magnetic.x, (v: number) => v * 0.4),
-                  y: useTransform(magnetic.y, (v: number) => v * 0.4),
-                  display: "inline-block",
-                }}
-              >
-                Connect now
-              </motion.span>
-            </Link>
+            wURLd
           </motion.div>
-        </motion.div>
-      </section>
-
-      {/* ── Marquee separator ── */}
-      <Marquee
-        speed={-1}
-        items={[
-          "Custom Code",
-          "No Templates",
-          "Kelowna BC",
-          "Hand Built",
-          "SEO Optimized",
-          "Fast Delivery",
-        ]}
-      />
-
-      {/* ── Services ── */}
-      <section className="services" aria-label="Website Services">
-        <div className="services-inner">
-          <motion.div
-            layout
-            className="section-label"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            Services
-          </motion.div>
-
-          <TextReveal
-            text="Services Offered"
-            as="h2"
-            className="section-title"
-            delay={0.2}
-          />
-
-          <motion.p
-            className="services-sub"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            Custom built for your needs — no overused templates
-          </motion.p>
 
           <motion.div
-            layout
-            className="services-grid"
-            variants={stagger(0.2, 0)}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            className="sleeve-accent"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 0.45,
+              duration: 0.8,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
-            <ServiceCard
-              tag="Brand"
-              tagColor="purple"
-              title="Brand Website"
-              desc="Grow your brand and maximize your reach with SEO-optimized, custom built sites."
-              videoSrc="/videos/brand.mp4"
-            />
-            <ServiceCard
-              tag="Personal"
-              tagColor="pink"
-              title="Personal Site"
-              desc="Show off your projects, skills, and personality with a site built around you."
-              videoSrc="/videos/personal.mp4"
-            />
+            Web Design
           </motion.div>
+
+          <motion.div
+            className="sleeve-sub"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            Custom coded, no templates
+          </motion.div>
+
+          {/* Bottom credits */}
+          <div className="sleeve-credits">
+            <span>Custom Coded</span>
+            <span className="sleeve-credits-dot">·</span>
+            <span>Hand Built</span>
+            <span className="sleeve-credits-dot">·</span>
+            <span>No Templates</span>
+          </div>
+
+          {/* Rainbow stripe across bottom */}
+          <SleeveRainbow />
+
+          <span className="sleeve-year">© 2026</span>
+          <span className="sleeve-catalog">WRD-001</span>
         </div>
-      </section>
 
-      {/* ── Marquee separator ── */}
-      <Marquee
-        items={[
-          "Tell Me Your Vision",
-          "I Build It",
-          "You Go Live",
-          "Simple Process",
-          "Professional Results",
-        ]}
-        speed={1}
-      />
+        {/* ── Draggable Record ── */}
+        <div
+          className={`record-track${isMobile ? " record-track-mobile" : ""}`}
+          style={
+            isMobile
+              ? {
+                  transform: `translate(-50%, -50%) scale(${0.4 + (pullX / maxX) * 0.6})`,
+                  transition: draggingRef.current
+                    ? "none"
+                    : "transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+                  zIndex: pullX > maxX * 0.3 ? 4 : 2,
+                }
+              : {
+                  transform: `translateY(-50%) translateX(${pullX}px)`,
+                  transition: draggingRef.current
+                    ? "none"
+                    : "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                }
+          }
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+        >
+          <div
+            className={`vinyl${fullyOut ? " vinyl-spinning" : ""}`}
+            style={{ width: vinylSize, height: vinylSize }}
+          >
+            <div className={`vinyl-inner${flipped ? " flipped" : ""}`}>
+              {/* Side A */}
+              <div className="vinyl-face vinyl-front">
+                <Grooves />
+                <div className="label-area label-front">
+                  <span className="label-side-text">Side A</span>
+                  <span className="label-title">wURLd</span>
+                  <div className="label-links">
+                    <Link href="/works" className="label-link">
+                      Portfolio
+                    </Link>
+                    <Link href="/contact" className="label-link">
+                      Contact
+                    </Link>
+                  </div>
+                </div>
+                <div className="vinyl-hole" />
+              </div>
 
-      {/* ── How It Works ── */}
-      <HowItWorks />
+              {/* Side B */}
+              <div className="vinyl-face vinyl-back">
+                <Grooves />
+                <div className="label-area label-back">
+                  <span className="label-side-text label-side-b">Side B</span>
+                  <span className="label-title label-title-b">wURLd</span>
+                  <div className="label-links">
+                    <Link href="/about" className="label-link label-link-b">
+                      About
+                    </Link>
+                    <Link href="/works" className="label-link label-link-b">
+                      Services
+                    </Link>
+                  </div>
+                </div>
+                <div className="vinyl-hole" />
+              </div>
+            </div>
+          </div>
+
+          <div className="flip-hint" style={{ opacity: fullyOut ? 1 : 0 }}>
+            Click vinyl to flip
+          </div>
+        </div>
+      </div>
+
+      {/* Pull hint */}
+      <div className="pull-hint" style={{ opacity: pullX < 20 ? 1 : 0 }}>
+        <span className="pull-arrow">
+          {isMobile
+            ? "Swipe down to pull the record out↓"
+            : "Drag or scroll to pull the record out →"}
+        </span>
+      </div>
+
+      <RainbowStripe reverse />
     </main>
   );
 }

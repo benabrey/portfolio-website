@@ -1,5 +1,5 @@
 /* ============================================================
-   NAV
+   NAV — 70's Edition
    ============================================================ */
 
 nav {
@@ -23,35 +23,37 @@ nav.scrolled {
   background: rgba(19,15,10,0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 3px solid var(--accent);
 }
 
 .nav-logo {
   font-family: var(--font-hero);
-  font-size: 2.1rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   color: var(--text);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  font-family: var(--font-display);
+  gap: 6px;
 }
 .nav-links a {
-  font-size: 1.25rem;
-  font-weight: 200;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 400;
   color: var(--text-sub);
-  padding: 0.45rem 0.9rem;
-  border-radius: 8px;
-  transition: color 0.2s, background 0.2s;
+  padding: 6px 18px;
+  border-radius: 100px;
+  border: 1.5px solid transparent;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
 }
 .nav-links a:hover,
 .nav-links a.active {
   color: var(--text);
-  background: rgba(242,232,213,0.06);
+  border-color: var(--accent);
+  background: rgba(217,91,41,0.1);
 }
 
 .nav-toggle {
@@ -67,8 +69,8 @@ nav.scrolled {
   width: 42px;
   height: 42px;
   background: rgba(242,232,213,0.04);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
   cursor: pointer;
   padding: 0;
   transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
@@ -99,18 +101,13 @@ nav.scrolled {
 .nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); width: 18px; }
 
 .nav-overlay { display: none; }
-
-.nav-mobile{
-  display:none;
-}
+.nav-mobile { display: none; }
 
 @media (max-width: 768px) {
-  .nav-toggle { display:flex;}
+  .nav-toggle { display: flex; }
   .nav-links { display: none; }
 
-  .nav-overlay{
-    z-index:990;
-  }
+  .nav-overlay { z-index: 990; }
 
   .nav-mobile {
     display: none;
@@ -136,10 +133,10 @@ nav.scrolled {
   .nav-mobile li:first-child { border-top: 1px solid var(--border); }
 
   .nav-mobile a {
-    font-family: var(--font-display);
-    font-size: clamp(2.2rem, 10vw, 3.2rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
+    font-family: var(--font-hero);
+    font-size: clamp(2rem, 10vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
     color: var(--text-muted);
     padding: 1rem 1.5rem;
     width: 100%;

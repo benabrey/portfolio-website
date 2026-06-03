@@ -1,12 +1,9 @@
 "use client";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import TextReveal from "../components/TextReveal";
-import Counter from "../components/Counter";
-import Marquee from "../components/Marquee";
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
@@ -14,12 +11,11 @@ const fadeUp: Variants = {
   },
 };
 
-const fadeUpSlow: Variants = {
-  hidden: { opacity: 0, y: 60 },
+const fadeIn: Variants = {
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.6 },
   },
 };
 
@@ -28,168 +24,172 @@ const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
-const statItem: Variants = {
-  hidden: { opacity: 0, y: 20 },
+const slideIn: Variants = {
+  hidden: { opacity: 0, x: -40 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.98 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
+    x: 0,
     transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
 export default function Works() {
   return (
-    <main>
-      {/* ── Hero ── */}
-      <section className="works-page-hero">
-        <div className="hero-bg">
-          <video autoPlay muted loop playsInline style={{ opacity: 0.15 }}>
-            <source src="/videos/laptopOpening.mp4" type="video/mp4" />
-          </video>
-          <div className="works-hero-overlay" />
-        </div>
-        <div className="works-hero-content">
-          <motion.p
-            className="section-label"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+    <main className="mag-works">
+      {/* ── Masthead / Hero ── */}
+      <section className="mag-masthead">
+        <div className="mag-masthead-inner">
+          <motion.div
+            className="mag-issue"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
           >
-            Portfolio
-          </motion.p>
+            My Previous Works
+          </motion.div>
 
           <motion.h1
-            className="works-hero-title"
-            initial={{ opacity: 0, y: 50 }}
+            className="mag-title"
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.9,
-              delay: 0.35,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            transition={{ delay: 0.2, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            Built from scratch.
-            <br />
-            <em>Every time.</em>
+            Portfolio
           </motion.h1>
 
+          <motion.div
+            className="mag-rule"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          />
+
           <motion.p
-            className="works-hero-sub"
-            initial={{ opacity: 0, y: 30 }}
+            className="mag-tagline"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.6, duration: 0.7 }}
           >
-            Custom coded websites — no templates, no shortcuts
+            Sites hand-coded from scratch. No shortcuts.
           </motion.p>
         </div>
       </section>
 
-      <motion.div
-        className="works-stats"
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+      {/* ── Rainbow divider ── */}
+      {/* <div className="rainbow-stripe">
+        <span className="s1" />
+        <span className="s2" />
+        <span className="s3" />
+        <span className="s4" />
+        <span className="s5" />
+        <span className="s6" />
+      </div> */}
+
+      {/* ── Pull Quote / Manifesto ── */}
+      <motion.section
+        className="mag-pullquote"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
       >
-        <motion.div className="works-stat" variants={statItem}>
-          <span className="works-stat-num">100%</span>
-          <span className="works-stat-label">Custom Code</span>
-        </motion.div>
-        <div className="works-stat-divider" />
-        <motion.div className="works-stat" variants={statItem}>
-          <span className="works-stat-num">1</span>
-          <span className="works-stat-label">Live Project</span>
-        </motion.div>
+        <div className="mag-pullquote-rule" />
+        <motion.p
+          className="mag-pullquote-text"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className="mag-pullquote-accent">
+            Every pixel placed with intention.
+          </span>
+        </motion.p>
+        <div className="mag-pullquote-rule" />
+      </motion.section>
+      {/* ── Rainbow divider ── */}
+      <div className="rainbow-stripe">
+        <span className="s1" />
+        <span className="s2" />
+        <span className="s3" />
+        <span className="s4" />
+        <span className="s5" />
+        <span className="s6" />
+      </div>
 
-        <div className="works-stat-divider" />
-        <motion.div className="works-stat" variants={statItem}>
-          <span className="works-stat-num">∞</span>
-          <span className="works-stat-label">Revisions</span>
-        </motion.div>
-      </motion.div>
-
-      {/* ── Project Cards ── */}
-      <section className="works-projects" aria-label="Projects">
-        <div className="works-projects-inner">
-          {/* motion.div with whileHover for the card lift effect */}
+      {/* ── Feature Spread — Project 01 ── */}
+      <section className="mag-spread">
+        <div className="mag-spread-inner">
+          {/* Left column — editorial text */}
           <motion.div
-            className="project-card"
-            variants={cardVariant}
+            className="mag-spread-text"
+            variants={stagger}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            whileHover={{ y: -4, boxShadow: "0 0 60px rgba(217,91,41,0.12)" }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            viewport={{ once: true, amount: 0.2 }}
           >
-            <div className="project-card-header">
-              <div className="project-meta">
-                <span className="project-number">01</span>
-                <div className="project-tags">
-                  <span className="project-tag">Photography</span>
-                  <span className="project-tag">Business</span>
-                  <span className="project-tag">Booking Website</span>
-                </div>
-              </div>
-              <a
-                href="https://www.aestheticsbystasiaphotography.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-link"
-              >
-                Visit Site <span>↗</span>
-              </a>
-            </div>
+            <motion.span className="mag-project-num" variants={fadeIn}>
+              No. 01
+            </motion.span>
 
-            <div className="project-card-title-row">
-              <h2 className="project-title">Aesthetics By Stasia</h2>
-              <span className="project-status live">Live</span>
-            </div>
+            <motion.span className="mag-credit" variants={fadeIn}>
+              Photography / Business / Booking
+            </motion.span>
 
-            <p className="project-desc">
+            <motion.h2 className="mag-project-title" variants={slideIn}>
+              Aesthetics
+              <br />
+              <span className="mag-project-title-accent">By Stasia</span>
+            </motion.h2>
+
+            <motion.div className="mag-column-rule" variants={fadeIn} />
+
+            <motion.p className="mag-project-desc" variants={fadeUp}>
               A full-service photography website to showcase the artist&apos;s
               vision and give future clients references and inspiration for
               their photoshoots. Complete with a contact form that sends session
               requests directly to the artist&apos;s email.
-            </p>
+            </motion.p>
 
-            <div className="project-tech">
-              <span className="tech-tag">HTML</span>
-              <span className="tech-tag">CSS</span>
-              <span className="tech-tag">JavaScript</span>
-            </div>
+            <motion.span className="mag-credit" variants={fadeIn}>
+              Built with HTML, CSS, JavaScript
+            </motion.span>
 
-            <div className="project-preview">
-              <div className="project-preview-bar">
-                <div className="preview-dots">
+            <motion.div className="mag-project-links" variants={fadeUp}>
+              <a
+                href="https://www.aestheticsbystasiaphotography.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mag-visit"
+              >
+                Visit Site ↗
+              </a>
+              <span className="mag-status">✦ Live</span>
+            </motion.div>
+          </motion.div>
+
+          {/* Right column — browser preview */}
+          <motion.div
+            className="mag-spread-preview"
+            initial={{ opacity: 0, y: 40, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="mag-browser">
+              <div className="mag-browser-bar">
+                <div className="mag-browser-dots">
                   <span />
                   <span />
                   <span />
                 </div>
-                <div className="preview-url">
+                <div className="mag-browser-url">
                   aestheticsbystasiaphotography.com
                 </div>
-                <a
-                  href="https://www.aestheticsbystasiaphotography.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="preview-open"
-                >
-                  Open ↗
-                </a>
               </div>
               <iframe
                 src="https://www.aestheticsbystasiaphotography.com"
-                height="850px"
+                height="700px"
                 width="100%"
                 style={{ border: "none", display: "block" }}
                 loading="lazy"
@@ -199,56 +199,53 @@ export default function Works() {
         </div>
       </section>
 
-      {/* ── More Coming ── */}
-      <section className="works-coming">
-        <div className="works-coming-inner">
-          <motion.div
-            className="coming-label"
+      {/* ── Rule ── */}
+      <div className="rainbow-stripe">
+        <span className="s6" />
+        <span className="s5" />
+        <span className="s4" />
+        <span className="s3" />
+        <span className="s2" />
+        <span className="s1" />
+      </div>
+
+      {/* ── Back Page — What's Next ── */}
+      <section className="mag-backpage">
+        <div className="mag-backpage-inner">
+          <motion.span
+            className="mag-backpage-label"
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            ✦ Coming Soon ✦
+          </motion.span>
+
+          <motion.h2
+            className="mag-backpage-title"
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            What&apos;s Next
-          </motion.div>
-
-          <motion.h2
-            className="coming-title"
-            variants={fadeUpSlow}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            More projects
-            <br />
-            <em>on the way</em>
+            Next
+            <span className="mag-backpage-accent"> Issue</span>
           </motion.h2>
 
           <motion.p
-            className="coming-sub"
+            className="mag-backpage-sub"
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            I&apos;m actively taking on new clients. Your project could be
-            featured here next.
+            I&apos;m actively taking on new clients. Your project could be the
+            next feature spread.
           </motion.p>
 
           <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <Link href="/contact" className="hero-cta">
-              <span>Start a project</span>
-            </Link>
-          </motion.div>
-
-          {/* stagger the coming cards */}
-          <motion.div
-            className="coming-cards"
+            className="mag-coming-grid"
             variants={stagger}
             initial="hidden"
             whileInView="visible"
@@ -257,48 +254,42 @@ export default function Works() {
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
-                className="coming-card"
-                variants={cardVariant}
-                whileHover={{ y: -4, borderColor: "rgba(217,91,41,0.3)" }}
+                className="mag-coming-card"
+                variants={fadeUp}
+                whileHover={{
+                  y: -4,
+                  borderColor: "rgba(217,91,41,0.35)",
+                }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                <div className="coming-card-icon">+</div>
-                <div className="coming-card-text">Your project here</div>
+                <span className="mag-coming-icon">+</span>
+                <span className="mag-coming-text">Your project here</span>
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </section>
-
-      {/* ── CTA Banner ── */}
-      <section className="works-cta-banner">
-        <div className="works-cta-inner">
-          <motion.h2
-            className="works-cta-title"
-            variants={fadeUpSlow}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            Ready to build
-            <br />
-            <em>something great?</em>
-          </motion.h2>
 
           <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            whileHover={{ scale: 1.04 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            style={{ marginTop: "2rem" }}
           >
-            <Link href="/contact" className="hero-cta">
-              <span>Let&apos;s talk</span>
+            <Link href="/contact" className="mag-cta">
+              Start a Project ✦
             </Link>
           </motion.div>
         </div>
       </section>
+
+      <div className="rainbow-stripe">
+        <span className="s1" />
+        <span className="s2" />
+        <span className="s3" />
+        <span className="s4" />
+        <span className="s5" />
+        <span className="s6" />
+      </div>
     </main>
   );
 }

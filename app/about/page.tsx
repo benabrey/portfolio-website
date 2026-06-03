@@ -1,17 +1,42 @@
+"use client";
 import React from "react";
+import { motion, type Variants } from "framer-motion";
 import TechStack from "../components/TechStack";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+function RainbowStripe({ reverse = false }: { reverse?: boolean }) {
+  const order = reverse
+    ? ["s6", "s5", "s4", "s3", "s2", "s1"]
+    : ["s1", "s2", "s3", "s4", "s5", "s6"];
+  return (
+    <div className="rainbow-stripe">
+      {order.map((c) => (
+        <span key={c} className={c} />
+      ))}
+    </div>
+  );
+}
 
 export default function page() {
   return (
     <main>
       <section className="about section" aria-label="About me">
-        <div className="about-video-bg">
-          <video autoPlay muted loop playsInline>
-            <source src="/videos/oneZero.mp4" type="video/mp4" />
-          </video>
-          <div className="about-video-overlay" />
-        </div>
-
+        <motion.div
+          className="contact-side-badge"
+          variants={fadeUp}
+          style={{ marginBottom: "10px", textAlign: "center" }}
+        >
+          ✦ Side D ✦
+        </motion.div>
+        <RainbowStripe />
         <div className="about reveal">
           <div className="about-image-wrap">
             <img src="/images/BenAbout.jpg" loading="lazy" alt="me" />
@@ -29,6 +54,8 @@ export default function page() {
           </div>
         </div>
       </section>
+
+      <RainbowStripe />
 
       <section className="about techstack">
         <div className="techstack reveal">

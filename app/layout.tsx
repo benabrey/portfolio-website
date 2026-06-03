@@ -1,19 +1,18 @@
-import { Monoton, Fascinate_Inline, DM_Sans } from "next/font/google";
+import { Shrikhand, Righteous, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import { type ReactNode } from "react";
 import ScrollProgress from "./components/ScrollProgress";
-import AlbumCover from "./AlbumCover";
 
-const monoton = Monoton({
+const shrikhand = Shrikhand({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-hero",
   display: "swap",
 });
 
-const fascinateInline = Fascinate_Inline({
+const righteous = Righteous({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-display",
@@ -27,7 +26,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata = {
-  title: "Websites By Ben",
+  title: "wURLd Web Design",
   description: "Custom coded websites, no cookie cutter services used",
 };
 
@@ -41,11 +40,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body
-        className={`${monoton.variable} ${fascinateInline.variable} ${dmSans.variable}`}
+        className={`${shrikhand.variable} ${righteous.variable} ${dmSans.variable}`}
       >
         <Nav />
         <ScrollProgress />
-        <AlbumCover />
         {children}
         <Footer />
       </body>
