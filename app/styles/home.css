@@ -438,9 +438,9 @@
   font-size: clamp(0.65rem, 1.1vw, 0.85rem);
   color: var(--text-sub);
   position: absolute;
-  /* Desktop: sits in the vinyl landing zone, right of the sleeve */
+  /* Desktop: right of center where the vinyl will land */
   top: 50%;
-  left: 55%;
+  right: 14%;
   transform: translateY(-50%);
   transition: opacity 0.4s;
   white-space: nowrap;
@@ -470,6 +470,12 @@
 
 /* ── Mobile — fullscreen vinyl takeover ── */
 @media (max-width: 768px) {
+  /* Use dynamic viewport height so the page fills the actual visible area on iOS Safari,
+     not the 100vh that includes the browser chrome — fixes hidden hint + peeking footer */
+  .vinyl-home {
+    height: 100dvh;
+  }
+
   .turntable-mobile {
     flex-direction: column;
     align-items: center;
@@ -537,8 +543,9 @@
   .sleeve-corner { font-size: 0.5rem; }
 
   .pull-hint {
-    /* Reset desktop positioning, go back to bottom-center for mobile */
+    /* Reset ALL desktop positioning */
     top: auto;
+    right: auto;
     left: 50%;
     transform: translateX(-50%);
     bottom: 32px;

@@ -176,13 +176,14 @@ export default function Home() {
     return () => scene.removeEventListener("wheel", onWheel);
   }, [maxX]);
 
-  // Lock page scroll until record is fully out, then release so footer is reachable
+  // Desktop only: lock body scroll until record is out.
+  // Mobile uses touchmove preventDefault instead — setting body overflow on iOS
+  // creates a scroll container that permanently kills touch-scroll even when released.
   useEffect(() => {
+    if (isMobile) return;
     document.body.style.overflow = fullyOut ? "" : "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [fullyOut]);
+    return () => { document.body.style.overflow = ""; };
+  }, [fullyOut, isMobile]);
 
   const sleeveSize = vinylSize * 1.12;
 
