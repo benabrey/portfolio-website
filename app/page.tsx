@@ -176,13 +176,13 @@ export default function Home() {
     return () => scene.removeEventListener("wheel", onWheel);
   }, [maxX]);
 
-  // Lock page scroll
+  // Lock page scroll until record is fully out, then release so footer is reachable
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = fullyOut ? "" : "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [fullyOut]);
 
   const sleeveSize = vinylSize * 1.12;
 

@@ -438,9 +438,10 @@
   font-size: clamp(0.65rem, 1.1vw, 0.85rem);
   color: var(--text-sub);
   position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Desktop: sits in the vinyl landing zone, right of the sleeve */
+  top: 50%;
+  left: 55%;
+  transform: translateY(-50%);
   transition: opacity 0.4s;
   white-space: nowrap;
   z-index: 10;
@@ -536,8 +537,12 @@
   .sleeve-corner { font-size: 0.5rem; }
 
   .pull-hint {
-    bottom: 20px;
-    font-size: 0.6rem;
+    /* Reset desktop positioning, go back to bottom-center for mobile */
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 32px;
+    font-size: 1rem;
   }
 
   .pull-arrow {
@@ -546,7 +551,7 @@
 
   @keyframes nudge-mobile {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
+    50% { transform: translateY(-8px); }
   }
 
   .flip-hint {
