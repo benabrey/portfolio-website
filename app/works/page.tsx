@@ -162,7 +162,7 @@ export default function Works() {
                 rel="noopener noreferrer"
                 className="mag-visit"
               >
-                Visit Site ↗
+                Visit Site
               </a>
               <span className="mag-status">✦ Live</span>
             </motion.div>

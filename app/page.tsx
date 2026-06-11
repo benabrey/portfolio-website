@@ -81,7 +81,7 @@ export default function Home() {
       setIsMobile(mobile);
 
       if (mobile) {
-        setVinylSize(Math.min(vw * 0.76, 360));
+        setVinylSize(Math.min(vw * 0.88, 420));
         setMaxX(120);
       } else {
         const size = Math.min(Math.max(vh * 0.8, 400), 600);
@@ -148,16 +148,19 @@ export default function Home() {
         return;
       }
 
-      // Tap the vinyl when revealed → flip it
-      if (revealed && target.closest(".vinyl")) {
-        setFlipped((f) => !f);
+      if (revealed) {
+        if (target.closest(".vinyl")) {
+          setFlipped((f) => !f);
+          return;
+        }
+        setRevealed(false);
+        setFlipped(false);
       }
     };
 
     document.addEventListener("touchend", onTap, { passive: true });
     return () => document.removeEventListener("touchend", onTap);
   }, [isMobile, revealed]);
-
 
   // ── Desktop: wheel/trackpad drives vinyl, passes through at boundaries ────
   useEffect(() => {
@@ -210,14 +213,14 @@ export default function Home() {
         <div
           className="sleeve"
           style={{
-            width: isMobile ? Math.min(vinylSize * 1.15, 420) : sleeveSize,
-            height: isMobile ? Math.min(vinylSize * 1.15, 420) : sleeveSize,
+            width: isMobile ? Math.min(vinylSize * 1.15, 500) : sleeveSize,
+            height: isMobile ? Math.min(vinylSize * 1.15, 500) : sleeveSize,
             ...(isMobile
               ? {
                   transform: revealed
-                  ? "translateX(-110%) scale(0.8)"
-                  : "translateX(0) scale(1)",
-                  opacity:revealed ? 0: 1,
+                    ? "translateX(-110%) scale(0.8)"
+                    : "translateX(0) scale(1)",
+                  opacity: revealed ? 0 : 1,
                 }
               : {}),
           }}
@@ -308,8 +311,8 @@ export default function Home() {
             isMobile
               ? {
                   transform: revealed
-                  ? "translate(-50%, -50%) scale(1)"
-                  : "translate(-50%, -50%) scale(0.3)",
+                    ? "translate(-50%, -50%) scale(1)"
+                    : "translate(-50%, -50%) scale(0.3)",
                   opacity: revealed ? 1 : 0,
                   zIndex: revealed ? 4 : 2,
                 }
@@ -326,7 +329,7 @@ export default function Home() {
           onPointerCancel={!isMobile ? onPointerUp : undefined}
         >
           <div
-            className={`vinyl${fullyOut ? " vinyl-spinning" : ""}`}
+            className={`vinyl${fullyOut || (isMobile && revealed) ? " vinyl-spinning" : ""}`}
             style={{ width: vinylSize, height: vinylSize }}
           >
             <div className={`vinyl-inner${flipped ? " flipped" : ""}`}>
@@ -375,7 +378,10 @@ export default function Home() {
       </div>
 
       {/* Pull hint */}
-      <div className="pull-hint" style={{ opacity: (isMobile ? !revealed : pullX < 20 ) ? 1 : 0 }}>
+      <div
+        className="pull-hint"
+        style={{ opacity: (isMobile ? !revealed : pullX < 20) ? 1 : 0 }}
+      >
         <span className="pull-arrow">
           {isMobile
             ? "Tap the sleeve to reveal the record"
