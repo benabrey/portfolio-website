@@ -60,6 +60,7 @@ export default function Home() {
   const [maxX, setMaxX] = useState(300);
   const [vinylSize, setVinylSize] = useState(340);
   const [isMobile, setIsMobile] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   const draggingRef = useRef(false);
   const dragStartX = useRef(0);
@@ -86,9 +87,7 @@ export default function Home() {
         const size = Math.min(Math.max(vh * 0.8, 400), 600);
         setVinylSize(size);
         const sleeveW = size * 1.12;
-        const sleeveRight = vw / 2 + sleeveW / 2;
-        const available = vw - sleeveRight - size * 0.1;
-        setMaxX(Math.max(available, size * 0.6));
+        setMaxX(Math.max(sleeveW * 0.55));
       }
     }
     updateSize();
@@ -133,62 +132,32 @@ export default function Home() {
     }
   }, [fullyOut]);
 
-  // ── Mobile: touch events drive vinyl, pass through at boundaries ──────────
+  // ── Mobile: tap sleeve to reveal, tap vinyl to flip ──
   useEffect(() => {
     if (!isMobile) return;
 
-    let lastY = 0;
-    let totalMove = 0;
-    let touchTarget: EventTarget | null = null;
+    const onTap = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
 
-    const onTouchStart = (e: TouchEvent) => {
-      lastY = e.touches[0].clientY;
-      totalMove = 0;
-      touchTarget = e.target;
-      draggingRef.current = true;
-    };
+      // Tap a nav link inside the record → let it navigate
+      if (target.closest(".label-link")) return;
 
-    const onTouchMove = (e: TouchEvent) => {
-      if ((touchTarget as HTMLElement)?.closest(".label-link")) return;
+      // Tap the sleeve → reveal the record
+      if (!revealed && target.closest(".sleeve")) {
+        setRevealed(true);
+        return;
+      }
 
-      const currentY = e.touches[0].clientY;
-      const dy = lastY - currentY; // positive = swipe up = pull vinyl out
-      lastY = currentY;
-      totalMove += Math.abs(dy);
-
-      const current = pullXRef.current;
-
-      // At boundary in the same direction → let native page scroll take over
-      if (dy > 0 && current >= maxX) return;
-      if (dy < 0 && current <= 0) return;
-
-      e.preventDefault();
-      const next = Math.max(0, Math.min(maxX, current + dy * 0.8));
-      pullXRef.current = next;
-      setPullX(next);
-    };
-
-    const onTouchEnd = (e: TouchEvent) => {
-      draggingRef.current = false;
-      // Tap on the vinyl disc when it's out → flip sides
-      if (totalMove < 8 && pullXRef.current >= maxX * 0.5) {
-        const target = e.changedTouches[0].target as HTMLElement;
-        if (target.closest(".vinyl") && !target.closest(".label-link")) {
-          setFlipped((f) => !f);
-        }
+      // Tap the vinyl when revealed → flip it
+      if (revealed && target.closest(".vinyl")) {
+        setFlipped((f) => !f);
       }
     };
 
-    document.addEventListener("touchstart", onTouchStart, { passive: true });
-    document.addEventListener("touchmove", onTouchMove, { passive: false });
-    document.addEventListener("touchend", onTouchEnd, { passive: true });
+    document.addEventListener("touchend", onTap, { passive: true });
+    return () => document.removeEventListener("touchend", onTap);
+  }, [isMobile, revealed]);
 
-    return () => {
-      document.removeEventListener("touchstart", onTouchStart);
-      document.removeEventListener("touchmove", onTouchMove);
-      document.removeEventListener("touchend", onTouchEnd);
-    };
-  }, [isMobile, maxX]);
 
   // ── Desktop: wheel/trackpad drives vinyl, passes through at boundaries ────
   useEffect(() => {
@@ -245,11 +214,10 @@ export default function Home() {
             height: isMobile ? Math.min(vinylSize * 1.15, 420) : sleeveSize,
             ...(isMobile
               ? {
-                  transform: `scale(${1 - (pullX / maxX) * 0.5}) perspective(1200px) rotateY(3deg)`,
-                  opacity: 1 - (pullX / maxX) * 0.7,
-                  transition: draggingRef.current
-                    ? "none"
-                    : "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+                  transform: revealed
+                  ? "translateX(-110%) scale(0.8)"
+                  : "translateX(0) scale(1)",
+                  opacity:revealed ? 0: 1,
                 }
               : {}),
           }}
@@ -339,11 +307,11 @@ export default function Home() {
           style={
             isMobile
               ? {
-                  transform: `translate(-50%, -50%) scale(${0.4 + (pullX / maxX) * 0.85})`,
-                  transition: draggingRef.current
-                    ? "none"
-                    : "transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-                  zIndex: pullX > maxX * 0.3 ? 4 : 2,
+                  transform: revealed
+                  ? "translate(-50%, -50%) scale(1)"
+                  : "translate(-50%, -50%) scale(0.3)",
+                  opacity: revealed ? 1 : 0,
+                  zIndex: revealed ? 4 : 2,
                 }
               : {
                   transform: `translateY(-50%) translateX(${pullX}px)`,
@@ -407,10 +375,10 @@ export default function Home() {
       </div>
 
       {/* Pull hint */}
-      <div className="pull-hint" style={{ opacity: pullX < 20 ? 1 : 0 }}>
+      <div className="pull-hint" style={{ opacity: (isMobile ? !revealed : pullX < 20 ) ? 1 : 0 }}>
         <span className="pull-arrow">
           {isMobile
-            ? "Swipe up to pull the record out ↑"
+            ? "Tap the sleeve to reveal the record"
             : "Drag or scroll to pull the record out →"}
         </span>
       </div>

@@ -4,6 +4,7 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import { type ReactNode } from "react";
 import ScrollProgress from "./components/ScrollProgress";
+import ConditionalFooter from "./components/ConditionalFooter";
 
 const shrikhand = Shrikhand({
   weight: "400",
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Nav />
         <ScrollProgress />
         {children}
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   );
