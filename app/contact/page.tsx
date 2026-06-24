@@ -17,11 +17,27 @@ const stagger: Variants = {
 };
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [result, setResult] = useState("");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => setForm({ ...form, [e.target.name]: e.target.value });
+  const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setResult("Sending...");
+    const formData = new FormData(e.currentTarget);
+    formData.append("access_key", "bcbe5fa4-b2bd-4650-bc3a-ed9dc54e822b");
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+
+    if (data.success) {
+      setResult("Message Sent!");
+      (e.target as HTMLFormElement).reset();
+    } else {
+      setResult("Something went wrong. Try again");
+    }
+  };
 
   return (
     <main className="contact-page">
@@ -61,7 +77,7 @@ export default function Contact() {
           <motion.form
             className="contact-form"
             variants={stagger}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={onSubmit}
           >
             <motion.div className="form-group" variants={fadeUp}>
               <label className="form-label" htmlFor="name">
@@ -73,8 +89,7 @@ export default function Contact() {
                 name="name"
                 type="text"
                 placeholder="Your name"
-                value={form.name}
-                onChange={handleChange}
+                required
               />
             </motion.div>
 
@@ -88,8 +103,7 @@ export default function Contact() {
                 name="email"
                 type="email"
                 placeholder="you@example.com"
-                value={form.email}
-                onChange={handleChange}
+                required
               />
             </motion.div>
 
@@ -103,8 +117,7 @@ export default function Contact() {
                 name="message"
                 placeholder="Tell me about your project..."
                 rows={5}
-                value={form.message}
-                onChange={handleChange}
+                required
               />
             </motion.div>
 
@@ -117,6 +130,15 @@ export default function Contact() {
             >
               Send It ✦
             </motion.button>
+            {result && (
+              <motion.p
+                className="form-result"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                {result}
+              </motion.p>
+            )}
           </motion.form>
         </motion.div>
       </section>

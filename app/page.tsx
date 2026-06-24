@@ -77,11 +77,11 @@ export default function Home() {
     function updateSize() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const mobile = vw < 768;
+      const mobile = vw < 1024;
       setIsMobile(mobile);
 
       if (mobile) {
-        setVinylSize(Math.min(vw * 0.88, 420));
+        setVinylSize(Math.min(vw * 1.2, 510));
         setMaxX(120);
       } else {
         const size = Math.min(Math.max(vh * 0.8, 400), 600);
@@ -213,8 +213,8 @@ export default function Home() {
         <div
           className="sleeve"
           style={{
-            width: isMobile ? Math.min(vinylSize * 1.15, 500) : sleeveSize,
-            height: isMobile ? Math.min(vinylSize * 1.15, 500) : sleeveSize,
+            width: isMobile ? Math.min(vinylSize * 1, 400) : sleeveSize,
+            height: isMobile ? Math.min(vinylSize * 1, 400) : sleeveSize,
             ...(isMobile
               ? {
                   transform: revealed
@@ -383,9 +383,11 @@ export default function Home() {
         style={{ opacity: (isMobile ? !revealed : pullX < 20) ? 1 : 0 }}
       >
         <span className="pull-arrow">
-          {isMobile
-            ? "Tap the sleeve to reveal the record"
-            : "Drag or scroll to pull the record out →"}
+          {isMobile ? (
+            <span className="shimmer-text">Tap to reveal the record</span>
+          ) : (
+            "Drag or scroll to pull the record out →"
+          )}
         </span>
       </div>
 

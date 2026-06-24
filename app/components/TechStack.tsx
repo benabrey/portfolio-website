@@ -77,10 +77,18 @@ export default function TechStack() {
         }}
         style={{ textAlign: "center", marginBottom: "4rem" }}
       >
-        <motion.div className="section-label" variants={fadeUp}>
+        <motion.div
+          className="section-label"
+          variants={fadeUp}
+          style={{ fontFamily: "var(--font-hero)" }}
+        >
           Tech Stack
         </motion.div>
-        <motion.h2 className="section-title" variants={fadeUp}>
+        <motion.h2
+          className="section-title"
+          variants={fadeUp}
+          style={{ fontFamily: "var(--font-hero)" }}
+        >
           Built with the best
         </motion.h2>
         <motion.p
@@ -90,6 +98,7 @@ export default function TechStack() {
             maxWidth: "40ch",
             margin: "1rem auto 0",
             fontSize: "1.05rem",
+            fontFamily: "var(--font-display)",
           }}
         >
           The tools I trust to build fast, accessible, modern sites

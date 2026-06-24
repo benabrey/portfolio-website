@@ -41,7 +41,7 @@
   align-items: center;
   flex: 1;
   z-index: 1;
-  margin-left: -30vw;
+  margin-left: -42vw;
 }
 
 /* ═══════════════════════════════════════
@@ -470,9 +470,7 @@
 }
 
 /* ── Mobile — fullscreen vinyl takeover ── */
-@media (max-width: 768px) {
-  /* Use dynamic viewport height so the page fills the actual visible area on iOS Safari,
-     not the 100vh that includes the browser chrome — fixes hidden hint + peeking footer */
+@media (max-width: 1024px) {
   .vinyl-home {
     height: 100dvh;
   }
@@ -504,7 +502,6 @@
     border-radius: 4px;
   }
 
-  /* Recalculate all absolute positions for mobile padding: 28px top/bottom, 20px left/right */
   .turntable-mobile .sleeve-rainbow {
     width: calc(100% + 40px);
     margin: 0 -20px;
@@ -534,6 +531,39 @@
     font-size: 0.65rem;
   }
 
+  .turntable-mobile .label-link{
+    font-size: 1rem;
+    padding: 8px 24px;
+    min-width: 110px;
+  }
+
+  .turntable-mobile .label-links{
+    gap: 8px;
+  }
+
+  .turntable-mobile .label-side-text{
+    font-size: 0.65rem;
+  }
+
+  .turntable-mobile .label-title{
+    font-size: 1.1rem;
+  }
+
+  .turntable-mobile .label-area {
+    width: 52%;
+  }
+
+  .turntable-mobile .sleeve::before{
+    width: 90%;
+  }
+
+  .turntable-mobile .sleeve-title{
+    font-size: 3.5rem;
+  }
+
+  .turntable-mobile .sleeve-accent{
+    font-size: 2.8rem;
+  }
   .record-track-mobile {
     position: absolute;
     left: 50%;
@@ -549,22 +579,49 @@
   .sleeve-corner { font-size: 0.5rem; }
 
   .pull-hint {
-    /* Reset ALL desktop positioning */
     top: auto;
     right: auto;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 32px;
-    font-size: 1rem;
+    bottom: 20%;
+    font-size: 1.2rem;
+    z-index: 20;
+  }
+
+  .shimmer-text{
+    color: var(--text-sub);
+    background: linear-gradient(
+      90deg,
+      var(--text-sub) 0%,
+      #B7410E 15%,
+      #d95b29 30%,
+      #DAA520 45%,
+      #CC8F00 55%,
+      #6B8E23 70%,
+      #5c3d1e 85%,
+      var(--text-sub) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2.5s ease-in-out infinite;
+    font-size: 1.8rem;
+  }
+
+  @supports not (-webkit-background-clip: text){
+    .shimmer-text{
+      -webkit-text-fill-color: unset;
+      color: var(--text-sub);
+    }
+  }
+  @keyframes shimmer {
+    0% { background-position: 100% 0;}
+    100% { background-position: -100% 0;}
   }
 
   .pull-arrow {
-    animation: nudge-mobile 1.4s ease-in-out infinite;
-  }
-
-  @keyframes nudge-mobile {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    animation: none;
   }
 
   .flip-hint {

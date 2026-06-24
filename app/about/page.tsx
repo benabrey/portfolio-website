@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import "../styles/about.css";
 import { motion, type Variants } from "framer-motion";
 import TechStack from "../components/TechStack";
 
