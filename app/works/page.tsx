@@ -199,6 +199,86 @@ export default function Works() {
         </div>
       </section>
 
+      {/* Project 02 */}
+      <section className="mag-spread">
+        <div className="mag-spread-inner">
+          {/* Left column — editorial text */}
+          <motion.div
+            className="mag-spread-text"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <motion.span className="mag-project-num" variants={fadeIn}>
+              No. 02
+            </motion.span>
+
+            <motion.span className="mag-credit" variants={fadeIn}>
+              Speaking Engagements / Business / Booking
+            </motion.span>
+
+            <motion.h2 className="mag-project-title" variants={slideIn}>
+              Complexity
+              <br />
+              <span className="mag-project-title-accent">Perspective</span>
+            </motion.h2>
+
+            <motion.div className="mag-column-rule" variants={fadeIn} />
+
+            <motion.p className="mag-project-desc" variants={fadeUp}>
+              A clean, accessible website for The Complexity Perspective, a
+              consulting practice exploring systems thinking and complexity
+              science. Built with a focus on accessibility and responsive
+              design.
+            </motion.p>
+
+            <motion.span className="mag-credit" variants={fadeIn}>
+              Built with HTML, CSS, JavaScript
+            </motion.span>
+
+            <motion.div className="mag-project-links" variants={fadeUp}>
+              <a
+                href="#"
+                target=" "
+                rel="noopener noreferrer"
+                className="mag-visit"
+              >
+                Under Construction
+              </a>
+              <span className="mag-status">✦ Currently Building</span>
+            </motion.div>
+          </motion.div>
+
+          {/* Right column — browser preview */}
+          <motion.div
+            className="mag-spread-preview"
+            initial={{ opacity: 0, y: 40, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="mag-browser">
+              <div className="mag-browser-bar">
+                <div className="mag-browser-dots">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div className="mag-browser-url">complexityperspective.com</div>
+              </div>
+              <iframe
+                src="https://complexityperspective.vercel.app/index.html"
+                height="700px"
+                width="100%"
+                style={{ border: "none", display: "block" }}
+                loading="lazy"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── Rule ── */}
       <div className="rainbow-stripe">
         <span className="s6" />
