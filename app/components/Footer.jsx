@@ -27,6 +27,10 @@ export default function Footer() {
           <span className="footer-copy">
             © {new Date().getFullYear()} wURLd
           </span>
+          <Link href="/privacy" className="footer-privacy">
+            {" "}
+            Privacy Policy
+          </Link>
           <Link href="/contact" className="footer-cta-btn">
             Let's work together →
           </Link>
