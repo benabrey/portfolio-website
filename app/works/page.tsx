@@ -199,6 +199,16 @@ export default function Works() {
         </div>
       </section>
 
+      {/* ── Rule ── */}
+      <div className="rainbow-stripe">
+        <span className="s6" />
+        <span className="s5" />
+        <span className="s4" />
+        <span className="s3" />
+        <span className="s2" />
+        <span className="s1" />
+      </div>
+
       {/* Project 02 */}
       <section className="mag-spread">
         <div className="mag-spread-inner">
