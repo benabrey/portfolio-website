@@ -101,9 +101,7 @@ export default function TechStack() {
             fontFamily: "var(--font-display)",
           }}
         >
-          The tools I trust to build fast, accessible, modern sites
-          <br />
-          no page-builders, no shortcuts.
+          The tools I trust to build fast and accessible sites
         </motion.p>
       </motion.div>
 
