@@ -44,9 +44,12 @@ export default function page() {
           <div className="about-text">
             <h2 className="section-title">About Me</h2>
             <p className="about-body">
-              I am a 3rd year computer science student with a passion for UI/UX
-              design and making websites as functional and aesthetic as
-              possible.
+              I'm a developer and designer based in Kelowna, BC. I build custom
+              coded websites. No templates, no page builders, no drag-and-drop.
+              Every site I deliver is hand-built with clean, modern code
+              tailored to the client.<br></br> I work across the full stack,
+              from responsive front-end design to deployment and domain setup.
+              If you've got a project in mind, I'd love to hear about it.
             </p>
             <a href="/works" className="hero-cta">
               <span>View My Previous Works</span>

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -34,6 +35,7 @@ const slideIn: Variants = {
 };
 
 export default function Works() {
+  const router = useRouter();
   return (
     <main className="mag-works">
       {/* ── Masthead / Hero ── */}
@@ -199,6 +201,16 @@ export default function Works() {
         </div>
       </section>
 
+      {/* ── Rule ── */}
+      <div className="rainbow-stripe">
+        <span className="s6" />
+        <span className="s5" />
+        <span className="s4" />
+        <span className="s3" />
+        <span className="s2" />
+        <span className="s1" />
+      </div>
+
       {/* Project 02 */}
       <section className="mag-spread">
         <div className="mag-spread-inner">
@@ -239,14 +251,14 @@ export default function Works() {
 
             <motion.div className="mag-project-links" variants={fadeUp}>
               <a
-                href="#"
-                target=" "
+                href="https://complexityperspective.ca"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="mag-visit"
               >
-                Under Construction
+                Visit Site
               </a>
-              <span className="mag-status">✦ Currently Building</span>
+              <span className="mag-status">✦ Live</span>
             </motion.div>
           </motion.div>
 
@@ -265,10 +277,103 @@ export default function Works() {
                   <span />
                   <span />
                 </div>
-                <div className="mag-browser-url">complexityperspective.com</div>
+                <div className="mag-browser-url">complexityperspective.ca</div>
               </div>
               <iframe
-                src="https://complexityperspective.vercel.app/index.html"
+                src="https://complexityperspective.ca"
+                height="700px"
+                width="100%"
+                style={{ border: "none", display: "block" }}
+                loading="lazy"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Rule ── */}
+      <div className="rainbow-stripe">
+        <span className="s6" />
+        <span className="s5" />
+        <span className="s4" />
+        <span className="s3" />
+        <span className="s2" />
+        <span className="s1" />
+      </div>
+
+      {/* Project 03 */}
+      <section className="mag-spread">
+        <div className="mag-spread-inner">
+          {/* Left column — editorial text */}
+          <motion.div
+            className="mag-spread-text"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <motion.span className="mag-project-num" variants={fadeIn}>
+              No. 03
+            </motion.span>
+
+            <motion.span className="mag-credit" variants={fadeIn}>
+              Consulting / Learning / Booking
+            </motion.span>
+
+            <motion.h2 className="mag-project-title" variants={slideIn}>
+              Connect
+              <br />
+              <span className="mag-project-title-accent">Autism</span>
+            </motion.h2>
+
+            <motion.div className="mag-column-rule" variants={fadeIn} />
+
+            <motion.p className="mag-project-desc" variants={fadeUp}>
+              A one-page website for Connect Autism, a Kelowna-based practice
+              offering assessment and support services for autistic individuals
+              and their families. Features a slide-out team sidebar for easy
+              access to practitioner bios, with a clean, calm layout designed to
+              feel welcoming rather than clinical.
+            </motion.p>
+
+            <motion.span className="mag-credit" variants={fadeIn}>
+              Built with HTML, CSS, JavaScript
+            </motion.span>
+
+            <motion.div className="mag-project-links" variants={fadeUp}>
+              <a
+                href="https://connect-autism.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mag-visit"
+              >
+                Under Construction
+              </a>
+              <span className="mag-status">✦ In the Works</span>
+            </motion.div>
+          </motion.div>
+
+          {/* Right column — browser preview */}
+          <motion.div
+            className="mag-spread-preview"
+            initial={{ opacity: 0, y: 40, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="mag-browser">
+              <div className="mag-browser-bar">
+                <div className="mag-browser-dots">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div className="mag-browser-url">
+                  connect-autism.vercel.app/
+                </div>
+              </div>
+              <iframe
+                src="https://connect-autism.vercel.app/"
                 height="700px"
                 width="100%"
                 style={{ border: "none", display: "block" }}
@@ -309,8 +414,8 @@ export default function Works() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            Next
-            <span className="mag-backpage-accent"> Issue</span>
+            What's
+            <span className="mag-backpage-accent"> Next?</span>
           </motion.h2>
 
           <motion.p
@@ -321,7 +426,7 @@ export default function Works() {
             viewport={{ once: true }}
           >
             I&apos;m actively taking on new clients. Your project could be the
-            next feature spread.
+            next.
           </motion.p>
 
           <motion.div
@@ -331,21 +436,19 @@ export default function Works() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
           >
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                className="mag-coming-card"
-                variants={fadeUp}
-                whileHover={{
-                  y: -4,
-                  borderColor: "rgba(217,91,41,0.35)",
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <span className="mag-coming-icon">+</span>
-                <span className="mag-coming-text">Your project here</span>
-              </motion.div>
-            ))}
+            <motion.div
+              className="mag-coming-card"
+              variants={fadeUp}
+              whileHover={{
+                y: -4,
+                borderColor: "rgba(217,91,41,0.35)",
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              onTap={() => router.push("/contact")}
+            >
+              <span className="mag-coming-icon">+</span>
+              <span className="mag-coming-text">Your project here</span>
+            </motion.div>
           </motion.div>
 
           <motion.div
