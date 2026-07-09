@@ -392,6 +392,18 @@ export default function Home() {
       </div>
 
       <RainbowStripe reverse />
+      <div style={{ textAlign: "center", padding: "0.5rem 0", opacity: 0.4 }}>
+        <Link
+          href="/privacy"
+          style={{
+            fontSize: "0.7rem",
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
+          Privacy Policy
+        </Link>
+      </div>
     </main>
   );
 }
