@@ -29,6 +29,12 @@ const dmSans = DM_Sans({
 export const metadata = {
   title: "wURLd Web Design",
   description: "Custom coded websites, no cookie cutter services used",
+
+  openGraph: {
+    title: "wURLd Web Design",
+    description: "Custom coded websites, no cookie cutter services used",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
