@@ -342,14 +342,14 @@ export default function Works() {
 
             <motion.div className="mag-project-links" variants={fadeUp}>
               <a
-                href="https://connect-autism.vercel.app/"
+                href="https://connectautism.ca/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mag-visit"
               >
-                Under Construction
+                Visit Site
               </a>
-              <span className="mag-status">✦ In the Works</span>
+              <span className="mag-status">✦ Live</span>
             </motion.div>
           </motion.div>
 
@@ -368,12 +368,10 @@ export default function Works() {
                   <span />
                   <span />
                 </div>
-                <div className="mag-browser-url">
-                  connect-autism.vercel.app/
-                </div>
+                <div className="mag-browser-url">connectautism.ca/</div>
               </div>
               <iframe
-                src="https://connect-autism.vercel.app/"
+                src="https://connectautism.ca/"
                 height="700px"
                 width="100%"
                 style={{ border: "none", display: "block" }}
@@ -414,7 +412,7 @@ export default function Works() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            What's
+            What&apos;s
             <span className="mag-backpage-accent"> Next?</span>
           </motion.h2>
 
